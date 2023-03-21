@@ -1,5 +1,5 @@
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
-import Signin from "./pages/Signin";
+import SignIn3 from "./pages/SignIn3";
 import Dashboard from "./pages/Dashboard";
 import { getItem } from "./utils/storage";
 
@@ -13,8 +13,8 @@ function MainRoutes() {
   return (
     <Routes>
       <Route path="/">
-        <Route path="/" element={<Signin />} />
-        <Route path="/signin" element={<Signin />} />
+        <Route path="/" element={<SignIn3 />} />
+        <Route path="/signin" element={<SignIn3 />} />
       </Route>
 
       <Route element={<ProtectedRoutes redirectTo="/signin" />}>

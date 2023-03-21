@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-function Signin() {
+function Signin2() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
@@ -98,4 +98,4 @@ function Signin() {
   );
 }
 
-export default Signin;
+export default Signin2;
