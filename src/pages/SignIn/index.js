@@ -83,7 +83,7 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password" 
             /> */}
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+            <FormControl fullWidth sx={{ m: 1, width: '25ch' }} variant="outlined">
               <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password"
@@ -100,13 +100,13 @@ export default function SignIn() {
                 </IconButton>
               </InputAdornment>
               }
-                label="Password"
+                label="asfas"
               />
             </FormControl>
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth
