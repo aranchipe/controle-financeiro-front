@@ -28,7 +28,7 @@ const schema = object({
   password: string().min(6).required("Campo obrigatório."),
 });
 
-function Signin2() {
+function Signin() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -165,4 +165,4 @@ function Signin2() {
   );
 }
 
-export default Signin2;
+export default Signin;
