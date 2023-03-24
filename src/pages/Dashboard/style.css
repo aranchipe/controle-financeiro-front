@@ -6,17 +6,16 @@
   min-height: 100vh;
 }
 
-.header{
+.header {
   background-color: black;
   width: 100%;
   height: 300px;
   margin-bottom: 50px;
 }
 
-.dashboard-content{
+.cards {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 50px;
-  padding: 0 5% 5% 5%;
-  background-color: red;
 }

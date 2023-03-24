@@ -44,7 +44,7 @@ function Signin() {
     if (token) {
       navigate("/dashboard");
     }
-  }, []);
+  });
 
   const {
     register,

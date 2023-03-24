@@ -29,7 +29,7 @@ export default function Card({ numberMes }) {
     setRegistros(response.data);
   };
 
-  const registrosJaneiro = registros.filter((item) => {
+  const registrosMes = registros.filter((item) => {
     return new Date(item.data).getMonth() === numberMes;
   });
 
@@ -85,7 +85,7 @@ export default function Card({ numberMes }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {registrosJaneiro.map((item) => (
+            {registrosMes.map((item) => (
               <TableRow
                 key={item.id}
                 sx={{
