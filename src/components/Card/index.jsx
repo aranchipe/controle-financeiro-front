@@ -1,16 +1,39 @@
+import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useEffect, useState } from "react";
 import axios from "../../services/axios";
 import { getItem } from "../../utils/storage";
-import { format } from "date-fns";
-import { Typography, Grid } from "@mui/material";
+import { useEffect, useState } from "react";
 import { Box } from "@mui/system";
+import { Typography, Grid } from "@mui/material";
+import { format } from "date-fns";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "rgb(96, 214, 132)",
+    color: "white",
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
 
 export default function Card({ numberMes }) {
   const [registros, setRegistros] = useState([]);
@@ -29,7 +52,7 @@ export default function Card({ numberMes }) {
     setRegistros(response.data);
   };
 
-  const registrosJaneiro = registros.filter((item) => {
+  const registrosMes = registros.filter((item) => {
     return new Date(item.data).getMonth() === numberMes;
   });
 
@@ -65,42 +88,62 @@ export default function Card({ numberMes }) {
       sx={{
         width: {
           md: "90%",
-          lg: "25%",
+          lg: "30%",
         },
         border: "1px solid black",
         borderRadius: "8px",
+        background: "white",
       }}
     >
       <Box sx={{ height: "40px", display: "flex", justifyContent: "center" }}>
         <Typography sx={{ fontWeight: "bold" }}>{mes}</Typography>
       </Box>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 400 }}>
+        <Table sx={{ minWidth: 400 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <TableCell>Descrição</TableCell>
-              <TableCell align="right">Valor</TableCell>
-              <TableCell align="right">Data</TableCell>
-              <TableCell align="right">Tipo</TableCell>
+              <StyledTableCell>Descrição</StyledTableCell>
+              <StyledTableCell align="right">Valor</StyledTableCell>
+              <StyledTableCell align="right">Data</StyledTableCell>
+              <StyledTableCell align="right">Tipo</StyledTableCell>
+              <StyledTableCell align="right"></StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {registrosJaneiro.map((item) => (
-              <TableRow
-                key={item.id}
-                sx={{
-                  "&:last-child td, &:last-child th": { border: 0 },
-                }}
-              >
-                <TableCell component="th" scope="row">
+            {registrosMes.map((item) => (
+              <StyledTableRow key={item.id}>
+                <StyledTableCell component="th" scope="row">
                   {item.description}
-                </TableCell>
-                <TableCell align="right">{item.value}</TableCell>
-                <TableCell align="right">
-                  {format(new Date(item.data), "yyyy-MM-dd")}
-                </TableCell>
-                <TableCell align="right">{item.type}</TableCell>
-              </TableRow>
+                </StyledTableCell>
+                <StyledTableCell align="right">{item.value}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {format(new Date(item.data), "dd-MM-yyyy")}
+                </StyledTableCell>
+                <StyledTableCell align="right">{item.type}</StyledTableCell>
+                <StyledTableCell align="right">
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <EditIcon
+                      sx={{
+                        color: "green",
+                        cursor: "pointer",
+                        ":hover": { transform: "scale(1.1)" },
+                      }}
+                    />
+                    <DeleteIcon
+                      sx={{
+                        color: "green",
+                        cursor: "pointer",
+                        ":hover": { transform: "scale(1.1)" },
+                      }}
+                    />
+                  </Box>
+                </StyledTableCell>
+              </StyledTableRow>
             ))}
           </TableBody>
         </Table>
