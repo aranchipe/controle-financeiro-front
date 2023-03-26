@@ -1,16 +1,19 @@
-.dashboard {
+.dashboard_1 {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
   overflow-y: auto;
-
+  background: linear-gradient(90.23deg, #05edb3 0.02%, #5ffb69 99.63%);
 }
 
-.header {
-  height: 324px;
+.dashboard_2 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
   background: linear-gradient(90.23deg, #05edb3 0.02%, #5ffb69 99.63%);
-  padding: 50px 100px;
 }
 
 .dashboard-content {
@@ -24,4 +27,3 @@
   gap: 50px;
   padding: 55px 105px;
 }
-
