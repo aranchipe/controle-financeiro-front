@@ -5,17 +5,19 @@ import { useState } from "react";
 import RegisterModal from "../../components/RegisterModal";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import { Typography } from "@mui/material";
+import { clear } from "../../utils/storage";
 
 function Dashboard() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const [showContent, setShowContent] = useState(true);
 
   const mesAtual = new Date().getMonth();
 
   return (
     <div className={showContent ? "dashboard_1" : "dashboard_2"}>
+      <Typography onClick={() => clear()}>Sair</Typography>
       <Button
         variant="contained"
         size="large"
@@ -31,12 +33,7 @@ function Dashboard() {
       >
         Adicionar Registro
       </Button>
-      <RegisterModal
-        open={open}
-        setOpen={setOpen}
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-      />
+      <RegisterModal open={open} setOpen={setOpen} />
       {showContent ? (
         <div className="dashboard-content">
           <CloseIcon
