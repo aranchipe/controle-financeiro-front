@@ -1,6 +1,5 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-
 import {
   Grid,
   FormControl,
@@ -14,20 +13,7 @@ import { date, object, string, number } from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { format } from "date-fns";
-import { getItem, setItem } from "../../utils/storage";
-import { useEffect, useState } from "react";
 import axios from "../../services/axios";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 
 const schema = object({
   description: string().required("Campo obrigatório."),
