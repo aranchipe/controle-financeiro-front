@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import TabsComponent from "../TabsComponent";
 import { TextField } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -23,31 +22,26 @@ const style = {
   display: "flex",
 };
 
-export default function BasicModal({
-  open,
-  setOpen,
-  mes,
-}) {
+export default function BasicModal({ open, setOpen, mes }) {
   const token = getItem("token");
-  const [savedMes, setSavedMes] = useState(2);
+  const [savedMesValue, setSavedMesValue] = useState();
+  const [savedMesId, setSavedMesId] = useState();
   const [form, setForm] = useState({
-    value:  savedMes,
+    value: savedMesValue,
     month: mes,
   });
   const [type, setType] = useState("");
-  
-  useEffect(() => {
-    listSaved()
-    handleTypeForm();
-    setForm({...form, 'value': savedMes}) 
-  },[open]);
 
+  useEffect(() => {
+    listSaved();
+    handleTypeForm();
+    setForm({ ...form, value: savedMesValue });
+  }, [open]);
 
   const handleClose = () => setOpen(false);
 
   const handleChangeInput = (e) => {
     setForm({ ...form, [e.target.name]: Number(e.target.value) });
-    console.log(form)
   };
 
   const listSaved = async () => {
@@ -60,19 +54,17 @@ export default function BasicModal({
       const saved = response.data.filter((item) => {
         return item.month === mes;
       });
-      if(saved.length === 0) {
-        setSavedMes('');
+      if (saved.length === 0) {
+        setSavedMesValue("");
       } else {
-        setSavedMes(saved[0].value);
-
-      }     
-    } catch (error) {
-      
-    }
+        setSavedMesValue(saved[0].value);
+        setSavedMesId(saved[0].id);
+      }
+    } catch (error) {}
   };
 
   const handleTypeForm = () => {
-    if (savedMes !== 0) {
+    if (savedMesValue) {
       setType("editar");
     } else {
       setType("cadastrar");
@@ -80,19 +72,28 @@ export default function BasicModal({
   };
 
   const handleSubmit = async () => {
-    if(type === 'cadastrar') {
+    if (type === "cadastrar") {
       try {
-        const response = await axios.post('/guardados', form,  {
+        const response = await axios.post("/guardados", form, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        })
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-
+    } else if (type === "editar") {
+      try {
+        const response = await axios.put(`/guardados/${savedMesId}`, form, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }
+  };
 
   return (
     <div>
@@ -111,6 +112,7 @@ export default function BasicModal({
             }}
           >
             Quanto você deseja guardar em {mes}?{type}
+            {savedMesId}
           </Typography>
           <TextField
             sx={{ marginTop: "30px", background: "#5ffb69" }}
@@ -119,8 +121,13 @@ export default function BasicModal({
             value={form.value}
             onChange={handleChangeInput}
           />
-          <Button variant="contained" fullWidth type="submit" onClick={handleSubmit}>
-          Guardar
+          <Button
+            variant="contained"
+            fullWidth
+            type="submit"
+            onClick={handleSubmit}
+          >
+            Guardar
           </Button>
         </Box>
       </Modal>

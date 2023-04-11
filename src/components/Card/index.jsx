@@ -19,6 +19,7 @@ import Button from "@mui/material/Button";
 import SaveModal from "../../components/SaveModal";
 import porquinho from "../../assets/porquinho.svg";
 import carteira from "../../assets/carteira.svg";
+import FreeMonay from "../FreeMonay";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,15 +46,16 @@ export default function Card({ numberMes }) {
   const [saida, setSaida] = useState(0);
   const token = getItem("token");
   const [open, setOpen] = useState(false);
+  const [openFreeMonay, setOpenFreeMonay] = useState(false);
   const handleOpen = () => setOpen(true);
+  const handleOpenFreeMonay = () => setOpenFreeMonay(true);
   const [savedMes, setSavedMes] = useState(0);
-
 
   useEffect(() => {
     listBillings();
     saidasMes();
     listSaved();
-  },[]);
+  }, []);
 
   const listBillings = async () => {
     const response = await axios.get("/registros", {
@@ -116,15 +118,12 @@ export default function Card({ numberMes }) {
       const saved = response.data.filter((item) => {
         return item.month === mes;
       });
-      if(saved.length === 0) {
+      if (saved.length === 0) {
         setSavedMes(0);
       } else {
         setSavedMes(saved[0].value);
-
-      }      
-    } catch (error) {
-      
-    }
+      }
+    } catch (error) {}
   };
 
   return (
@@ -140,9 +139,7 @@ export default function Card({ numberMes }) {
       }}
     >
       <Box sx={{ height: "40px", display: "flex", justifyContent: "center" }}>
-        <Typography
-          sx={{ fontWeight: "bold" }}
-        >
+        <Typography sx={{ fontWeight: "bold", fontFamily: "cursive" }}>
           {mes}
         </Typography>
       </Box>
@@ -153,7 +150,7 @@ export default function Card({ numberMes }) {
         >
           <TableHead>
             <TableRow>
-              <StyledTableCell>{savedMes}</StyledTableCell>
+              <StyledTableCell>Descrição</StyledTableCell>
               <StyledTableCell align="right">Valor</StyledTableCell>
               <StyledTableCell align="right">Data</StyledTableCell>
               <StyledTableCell align="right">Tipo</StyledTableCell>
@@ -202,7 +199,7 @@ export default function Card({ numberMes }) {
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: 'space-between',
+            justifyContent: "space-between",
           }}
           container
         >
@@ -211,8 +208,7 @@ export default function Card({ numberMes }) {
               variant="contained"
               size="large"
               sx={{
-                background:
-                  "#9BC7ED",
+                background: "#9BC7ED",
                 color: "black",
               }}
               fullWidth
@@ -222,19 +218,19 @@ export default function Card({ numberMes }) {
             </Button>
           </Grid>
 
-          <Grid > 
+          <Grid>
             <Button
               variant="contained"
               size="large"
               sx={{
                 background:
                   "linear-gradient(90.23deg, #cbee60 0.02%, #f4e404 99.63%)",
-                  
+
                 color: "black",
               }}
               onClick={() => {
                 handleOpen();
-                listSaved()
+                listSaved();
               }}
             >
               Guardar
@@ -246,15 +242,14 @@ export default function Card({ numberMes }) {
               variant="contained"
               size="large"
               sx={{
-                background:
-                  "#7ED08D",
+                background: "#7ED08D",
                 color: "black",
-                ':hover':{background:'#23C841'}
+                ":hover": { background: "#23C841" },
               }}
-              onClick={handleOpen}
+              onClick={handleOpenFreeMonay}
               fullWidth
             >
-              <img src={carteira} alt='carteira' style={{ width: "50px" }} />
+              <img src={carteira} alt="carteira" style={{ width: "50px" }} />
             </Button>
           </Grid>
         </Grid>
@@ -265,6 +260,11 @@ export default function Card({ numberMes }) {
         mes={mes}
         savedMes={savedMes}
         listSaved={listSaved}
+      />
+      <FreeMonay
+        openFreeMonay={openFreeMonay}
+        setOpenFreeMonay={setOpenFreeMonay}
+        savedMes={savedMes}
       />
     </Grid>
   );
