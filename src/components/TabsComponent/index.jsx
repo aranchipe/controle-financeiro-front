@@ -6,7 +6,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import RegisterForm from "../RegisterForm";
 
-export default function TabsComponent() {
+export default function TabsComponent({ handleClose }) {
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event, newValue) => {
@@ -23,10 +23,10 @@ export default function TabsComponent() {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <RegisterForm />
+          <RegisterForm type="entrada" handleClose={handleClose} />
         </TabPanel>
         <TabPanel value="2">
-          <RegisterForm />
+          <RegisterForm type="saida" handleClose={handleClose} />
         </TabPanel>
       </TabContext>
     </Box>

@@ -29,7 +29,7 @@ export default function BasicModal({ open, setOpen }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <TabsComponent />
+          <TabsComponent handleClose={handleClose} />
         </Box>
       </Modal>
     </div>

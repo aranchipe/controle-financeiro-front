@@ -1,23 +1,70 @@
 import "./style.css";
 import Card from "../../components/Card";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RegisterModal from "../../components/RegisterModal";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { Typography } from "@mui/material";
 import { clear } from "../../utils/storage";
+import { useNavigate } from "react-router-dom";
+import axios from "../../services/axios";
+import { getItem } from "../../utils/storage";
+import exit from "../../assets/exit.svg";
 
 function Dashboard() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const [showContent, setShowContent] = useState(true);
+  const [userName, setUserName] = useState("");
 
   const mesAtual = new Date().getMonth();
+  const navigate = useNavigate();
+  const handleQuit = () => {
+    clear();
+    navigate("/signin");
+  };
+  const token = getItem("token");
 
+  useEffect(() => {
+    userDetail();
+  });
+
+  const userDetail = async () => {
+    try {
+      const response = await axios.get("/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setUserName(response.data.name);
+    } catch (error) {}
+  };
   return (
     <div className={showContent ? "dashboard_1" : "dashboard_2"}>
-      <Typography onClick={() => clear()}>Sair</Typography>
+      <Typography
+        sx={{
+          position: "absolute",
+          left: "35px",
+          top: "30px",
+          fontFamily: "cursive",
+        }}
+      >
+        Seja bem vindo {userName}
+      </Typography>
+      <img
+        src={exit}
+        alt="exit"
+        onClick={handleQuit}
+        style={{
+          position: "absolute",
+          width: "50px",
+          top: "50px",
+          left: "20px",
+          cursor: "pointer",
+        }}
+      />
       <Button
         variant="contained"
         size="large"

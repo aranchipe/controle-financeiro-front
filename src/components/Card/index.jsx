@@ -14,6 +14,11 @@ import { Typography, Grid } from "@mui/material";
 import { format } from "date-fns";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import SaveModal from "../../components/SaveModal";
+import porquinho from "../../assets/porquinho.svg";
+import carteira from "../../assets/carteira.svg";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -37,11 +42,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function Card({ numberMes }) {
   const [registros, setRegistros] = useState([]);
+  const [saida, setSaida] = useState(0);
   const token = getItem("token");
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const [savedMes, setSavedMes] = useState(0);
+
 
   useEffect(() => {
     listBillings();
-  });
+    saidasMes();
+    listSaved();
+  },[]);
 
   const listBillings = async () => {
     const response = await axios.get("/registros", {
@@ -56,32 +68,64 @@ export default function Card({ numberMes }) {
     return new Date(item.data).getMonth() === numberMes;
   });
 
+  const saidasMes = () => {
+    let somaSaidas = 0;
+    const saidasMes = registrosMes.filter((item) => {
+      return item.type === "saida";
+    });
+    for (let item of saidasMes) {
+      somaSaidas = somaSaidas + Number(item.value);
+    }
+    setSaida(somaSaidas);
+  };
+
   let mes = "";
   if (numberMes === 0) {
-    mes = "Janeiro";
+    mes = "janeiro";
   } else if (numberMes === 1) {
-    mes = "Fevereiro";
+    mes = "fevereiro";
   } else if (numberMes === 2) {
-    mes = "Março";
+    mes = "março";
   } else if (numberMes === 3) {
-    mes = "Abril";
+    mes = "abril";
   } else if (numberMes === 4) {
-    mes = "Maio";
+    mes = "maio";
   } else if (numberMes === 5) {
-    mes = "Junho";
+    mes = "junho";
   } else if (numberMes === 6) {
-    mes = "Julho";
+    mes = "julho";
   } else if (numberMes === 7) {
-    mes = "Agosto";
+    mes = "agosto";
   } else if (numberMes === 8) {
-    mes = "Setembro";
+    mes = "setembro";
   } else if (numberMes === 9) {
-    mes = "Outubro";
+    mes = "outubro";
   } else if (numberMes === 10) {
-    mes = "Novembro";
+    mes = "novembro";
   } else if (numberMes === 11) {
-    mes = "Dezembro";
+    mes = "dezembro";
   }
+
+  const listSaved = async () => {
+    try {
+      const response = await axios.get("/guardados", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const saved = response.data.filter((item) => {
+        return item.month === mes;
+      });
+      if(saved.length === 0) {
+        setSavedMes(0);
+      } else {
+        setSavedMes(saved[0].value);
+
+      }      
+    } catch (error) {
+      
+    }
+  };
 
   return (
     <Grid
@@ -96,13 +140,20 @@ export default function Card({ numberMes }) {
       }}
     >
       <Box sx={{ height: "40px", display: "flex", justifyContent: "center" }}>
-        <Typography sx={{ fontWeight: "bold" }}>{mes}</Typography>
+        <Typography
+          sx={{ fontWeight: "bold" }}
+        >
+          {mes}
+        </Typography>
       </Box>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 400 }} aria-label="customized table">
+        <Table
+          sx={{ minWidth: 400, borderBottom: "1px solid black" }}
+          aria-label="customized table"
+        >
           <TableHead>
             <TableRow>
-              <StyledTableCell>Descrição</StyledTableCell>
+              <StyledTableCell>{savedMes}</StyledTableCell>
               <StyledTableCell align="right">Valor</StyledTableCell>
               <StyledTableCell align="right">Data</StyledTableCell>
               <StyledTableCell align="right">Tipo</StyledTableCell>
@@ -147,7 +198,74 @@ export default function Card({ numberMes }) {
             ))}
           </TableBody>
         </Table>
+        <Grid
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: 'space-between',
+          }}
+          container
+        >
+          <Grid item md={2} lg={2}>
+            <Button
+              variant="contained"
+              size="large"
+              sx={{
+                background:
+                  "#9BC7ED",
+                color: "black",
+              }}
+              fullWidth
+              onClick={handleOpen}
+            >
+              <img src={porquinho} style={{ width: "50px" }} />
+            </Button>
+          </Grid>
+
+          <Grid > 
+            <Button
+              variant="contained"
+              size="large"
+              sx={{
+                background:
+                  "linear-gradient(90.23deg, #cbee60 0.02%, #f4e404 99.63%)",
+                  
+                color: "black",
+              }}
+              onClick={() => {
+                handleOpen();
+                listSaved()
+              }}
+            >
+              Guardar
+            </Button>
+          </Grid>
+
+          <Grid item md={2} lg={2}>
+            <Button
+              variant="contained"
+              size="large"
+              sx={{
+                background:
+                  "#7ED08D",
+                color: "black",
+                ':hover':{background:'#23C841'}
+              }}
+              onClick={handleOpen}
+              fullWidth
+            >
+              <img src={carteira} alt='carteira' style={{ width: "50px" }} />
+            </Button>
+          </Grid>
+        </Grid>
       </TableContainer>
+      <SaveModal
+        open={open}
+        setOpen={setOpen}
+        mes={mes}
+        savedMes={savedMes}
+        listSaved={listSaved}
+      />
     </Grid>
   );
 }

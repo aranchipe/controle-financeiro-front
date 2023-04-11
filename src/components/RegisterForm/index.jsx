@@ -7,6 +7,7 @@ import {
   InputAdornment,
   FormHelperText,
   InputLabel,
+  Typography,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import { date, object, string, number } from "yup";
@@ -14,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { format } from "date-fns";
 import axios from "../../services/axios";
+import { getItem } from "../../utils/storage";
 
 const schema = object({
   description: string().required("Campo obrigatório."),
@@ -24,13 +26,8 @@ const schema = object({
   value: number().required("Campo obrigatório."),
 });
 
-export default function RegisterForm() {
-  const [value, setValue] = React.useState(0);
-  const [type, setType] = React.useState("entrada");
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
+export default function RegisterForm({ type, handleClose }) {
+  const token = getItem("token");
   const {
     register,
     getValues,
@@ -38,13 +35,22 @@ export default function RegisterForm() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
-  const handleSubmit = (date) => {
+  const handleSubmit = async (date) => {
     const dataCorreta = format(date.data, "dd-MM-yyyy");
-    console.log(getValues().value);
-    /* try {
-      await axios.post("/registros", data);
-    } catch (error) {} */
-    console.log({ ...date, data: dataCorreta });
+    try {
+      await axios.post(
+        "/registros",
+        { ...date, data: dataCorreta, type },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
