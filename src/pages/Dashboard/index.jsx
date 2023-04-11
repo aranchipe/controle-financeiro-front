@@ -17,6 +17,7 @@ function Dashboard() {
   const handleOpen = () => setOpen(true);
   const [showContent, setShowContent] = useState(true);
   const [userName, setUserName] = useState("");
+  const [registros, setRegistros] = useState([]);
 
   const mesAtual = new Date().getMonth();
   const navigate = useNavigate();
@@ -28,7 +29,8 @@ function Dashboard() {
 
   useEffect(() => {
     userDetail();
-  });
+    listBillings();
+  }, []);
 
   const userDetail = async () => {
     try {
@@ -40,6 +42,15 @@ function Dashboard() {
 
       setUserName(response.data.name);
     } catch (error) {}
+  };
+
+  const listBillings = async () => {
+    const response = await axios.get("/registros", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setRegistros(response.data);
   };
   return (
     <div className={showContent ? "dashboard_1" : "dashboard_2"}>
@@ -80,7 +91,11 @@ function Dashboard() {
       >
         Adicionar Registro
       </Button>
-      <RegisterModal open={open} setOpen={setOpen} />
+      <RegisterModal
+        listBillings={listBillings}
+        open={open}
+        setOpen={setOpen}
+      />
       {showContent ? (
         <div className="dashboard-content">
           <CloseIcon
@@ -94,18 +109,66 @@ function Dashboard() {
             fontSize="large"
             onClick={() => setShowContent(false)}
           />
-          <Card numberMes={0} />
-          <Card numberMes={1} />
-          <Card numberMes={2} />
-          <Card numberMes={3} />
-          <Card numberMes={4} />
-          <Card numberMes={5} />
-          <Card numberMes={6} />
-          <Card numberMes={7} />
-          <Card numberMes={8} />
-          <Card numberMes={9} />
-          <Card numberMes={10} />
-          <Card numberMes={11} />
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={0}
+          />
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={1}
+          />
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={2}
+          />
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={3}
+          />
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={4}
+          />
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={5}
+          />
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={6}
+          />
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={7}
+          />
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={8}
+          />
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={9}
+          />
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={10}
+          />
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={11}
+          />
         </div>
       ) : (
         <Card numberMes={mesAtual} />

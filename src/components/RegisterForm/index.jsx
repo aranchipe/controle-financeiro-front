@@ -26,7 +26,7 @@ const schema = object({
   value: number().required("Campo obrigatório."),
 });
 
-export default function RegisterForm({ type, handleClose }) {
+export default function RegisterForm({ type, handleClose, listBillings }) {
   const token = getItem("token");
   const {
     register,
@@ -48,6 +48,7 @@ export default function RegisterForm({ type, handleClose }) {
         }
       );
       handleClose();
+      listBillings();
     } catch (error) {
       console.log(error);
     }

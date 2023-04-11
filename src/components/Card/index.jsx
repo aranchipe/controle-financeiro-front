@@ -41,8 +41,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function Card({ numberMes }) {
-  const [registros, setRegistros] = useState([]);
+export default function Card({ numberMes, registros }) {
   const [saida, setSaida] = useState(0);
   const token = getItem("token");
   const [open, setOpen] = useState(false);
@@ -52,19 +51,9 @@ export default function Card({ numberMes }) {
   const [savedMes, setSavedMes] = useState(0);
 
   useEffect(() => {
-    listBillings();
     saidasMes();
     listSaved();
   }, []);
-
-  const listBillings = async () => {
-    const response = await axios.get("/registros", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    setRegistros(response.data);
-  };
 
   const registrosMes = registros.filter((item) => {
     return new Date(item.data).getMonth() === numberMes;

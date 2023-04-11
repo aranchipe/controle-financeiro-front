@@ -17,7 +17,7 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ open, setOpen }) {
+export default function BasicModal({ open, setOpen, listBillings }) {
   const handleClose = () => setOpen(false);
 
   return (
@@ -29,7 +29,10 @@ export default function BasicModal({ open, setOpen }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <TabsComponent handleClose={handleClose} />
+          <TabsComponent
+            listBillings={listBillings}
+            handleClose={handleClose}
+          />
         </Box>
       </Modal>
     </div>
