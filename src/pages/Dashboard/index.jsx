@@ -11,11 +11,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../services/axios";
 import { getItem } from "../../utils/storage";
 import exit from "../../assets/exit.svg";
+import { Box } from "@mui/system";
 
 function Dashboard() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const [showContent, setShowContent] = useState(true);
+  const [showContent, setShowContent] = useState(false);
+  const [openDashboard, setOpenDashboard] = useState(false);
   const [userName, setUserName] = useState("");
   const [registros, setRegistros] = useState([]);
 
@@ -53,7 +55,7 @@ function Dashboard() {
     setRegistros(response.data);
   };
   return (
-    <div className={showContent ? "dashboard_1" : "dashboard_2"}>
+    <div className={openDashboard ? "dashboard_1" : "dashboard_2"}>
       <Typography
         sx={{
           position: "absolute",
@@ -95,96 +97,70 @@ function Dashboard() {
         listBillings={listBillings}
         open={open}
         setOpen={setOpen}
+        action="register"
       />
-      {showContent ? (
-        <div className="dashboard-content">
-          <CloseIcon
-            sx={{
-              position: "absolute",
-              top: "30px",
-              right: "50px",
-              cursor: "pointer",
-              ":hover": { transform: "scale(1.1)" },
-            }}
-            fontSize="large"
-            onClick={() => setShowContent(false)}
-          />
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={0}
-          />
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={1}
-          />
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={2}
-          />
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={3}
-          />
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={4}
-          />
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={5}
-          />
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={6}
-          />
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={7}
-          />
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={8}
-          />
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={9}
-          />
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={10}
-          />
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={11}
-          />
-        </div>
-      ) : (
-        <Card numberMes={mesAtual} />
-      )}
-      {!showContent && (
-        <ArrowUpwardIcon
-          fontSize="large"
+
+      <div
+        className={
+          openDashboard
+            ? " dashboard-content dashboard-content-aberto"
+            : " dashboard-content dashboard-content-fechado"
+        }
+      >
+        <CloseIcon
           sx={{
-            position: "fixed",
-            bottom: "20px",
-            ":hover": { transform: "scale(1.1)" },
+            position: "absolute",
+            top: "30px",
+            right: "50px",
             cursor: "pointer",
+            ":hover": { transform: "scale(1.1)" },
           }}
-          onClick={() => setShowContent(true)}
+          fontSize="large"
+          onClick={() => {
+            setShowContent(false);
+            setOpenDashboard(false);
+          }}
         />
-      )}
+        <Card listBillings={listBillings} registros={registros} numberMes={0} />
+        <Card listBillings={listBillings} registros={registros} numberMes={1} />
+        <Card listBillings={listBillings} registros={registros} numberMes={2} />
+        <Card listBillings={listBillings} registros={registros} numberMes={3} />
+        <Card listBillings={listBillings} registros={registros} numberMes={4} />
+        <Card listBillings={listBillings} registros={registros} numberMes={5} />
+        <Card listBillings={listBillings} registros={registros} numberMes={6} />
+        <Card listBillings={listBillings} registros={registros} numberMes={7} />
+        <Card listBillings={listBillings} registros={registros} numberMes={8} />
+        <Card listBillings={listBillings} registros={registros} numberMes={9} />
+        <Card
+          listBillings={listBillings}
+          registros={registros}
+          numberMes={10}
+        />
+        <Card
+          listBillings={listBillings}
+          registros={registros}
+          numberMes={11}
+        />
+      </div>
+
+      <Card
+        numberMes={mesAtual}
+        listBillings={listBillings}
+        registros={registros}
+      />
+      <ArrowUpwardIcon
+        fontSize="large"
+        sx={{
+          position: "fixed",
+          bottom: "20px",
+          ":hover": { transform: "scale(1.1)" },
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          setShowContent(true);
+          setOpenDashboard(true);
+        }}
+      />
     </div>
   );
 }

@@ -20,6 +20,8 @@ import SaveModal from "../../components/SaveModal";
 import porquinho from "../../assets/porquinho.svg";
 import carteira from "../../assets/carteira.svg";
 import FreeMonay from "../FreeMonay";
+import DeleteModal from "../DeleteModal";
+import RegisterModal from "../../components/RegisterModal";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,9 +48,12 @@ export default function Card({ numberMes, registros }) {
   const token = getItem("token");
   const [open, setOpen] = useState(false);
   const [openFreeMonay, setOpenFreeMonay] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openRegisterModal, setOpenRegisterModal] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleOpenFreeMonay = () => setOpenFreeMonay(true);
   const [savedMes, setSavedMes] = useState(0);
+  const [registroId, setRegistroId] = useState();
 
   useEffect(() => {
     saidasMes();
@@ -170,12 +175,22 @@ export default function Card({ numberMes, registros }) {
                         cursor: "pointer",
                         ":hover": { transform: "scale(1.1)" },
                       }}
+                      onClick={() => setOpenRegisterModal(true)}
+                    />
+                    <RegisterModal
+                      open={openRegisterModal}
+                      setOpen={setOpenRegisterModal}
+                      action="edit"
                     />
                     <DeleteIcon
                       sx={{
                         color: "green",
                         cursor: "pointer",
                         ":hover": { transform: "scale(1.1)" },
+                      }}
+                      onClick={() => {
+                        setOpenDeleteModal(true);
+                        setRegistroId(item.id);
                       }}
                     />
                   </Box>
@@ -254,6 +269,12 @@ export default function Card({ numberMes, registros }) {
         openFreeMonay={openFreeMonay}
         setOpenFreeMonay={setOpenFreeMonay}
         savedMes={savedMes}
+      />
+      <DeleteModal
+        openDeleteModal={openDeleteModal}
+        setOpenDeleteModal={setOpenDeleteModal}
+        registroId={registroId}
+        listBillings
       />
     </Grid>
   );

@@ -74,7 +74,7 @@ export default function BasicModal({ open, setOpen, mes }) {
   const handleSubmit = async () => {
     if (type === "cadastrar") {
       try {
-        const response = await axios.post("/guardados", form, {
+        await axios.post("/guardados", form, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -84,7 +84,7 @@ export default function BasicModal({ open, setOpen, mes }) {
       }
     } else if (type === "editar") {
       try {
-        const response = await axios.put(`/guardados/${savedMesId}`, form, {
+        await axios.put(`/guardados/${savedMesId}`, form, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -93,6 +93,7 @@ export default function BasicModal({ open, setOpen, mes }) {
         console.log(error);
       }
     }
+    handleClose();
   };
 
   return (
@@ -111,8 +112,7 @@ export default function BasicModal({ open, setOpen, mes }) {
               textAlign: "center",
             }}
           >
-            Quanto você deseja guardar em {mes}?{type}
-            {savedMesId}
+            Quanto você deseja guardar em {mes}?{savedMesId}
           </Typography>
           <TextField
             sx={{ marginTop: "30px", background: "#5ffb69" }}

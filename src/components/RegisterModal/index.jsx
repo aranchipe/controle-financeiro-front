@@ -17,7 +17,7 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ open, setOpen, listBillings }) {
+export default function BasicModal({ open, setOpen, listBillings, action }) {
   const handleClose = () => setOpen(false);
 
   return (
@@ -32,6 +32,7 @@ export default function BasicModal({ open, setOpen, listBillings }) {
           <TabsComponent
             listBillings={listBillings}
             handleClose={handleClose}
+            action={action}
           />
         </Box>
       </Modal>

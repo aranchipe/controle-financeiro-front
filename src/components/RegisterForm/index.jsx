@@ -26,7 +26,12 @@ const schema = object({
   value: number().required("Campo obrigatório."),
 });
 
-export default function RegisterForm({ type, handleClose, listBillings }) {
+export default function RegisterForm({
+  type,
+  handleClose,
+  listBillings,
+  action,
+}) {
   const token = getItem("token");
   const {
     register,
@@ -37,22 +42,25 @@ export default function RegisterForm({ type, handleClose, listBillings }) {
 
   const handleSubmit = async (date) => {
     const dataCorreta = format(date.data, "dd-MM-yyyy");
-    try {
-      await axios.post(
-        "/registros",
-        { ...date, data: dataCorreta, type },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      handleClose();
-      listBillings();
-    } catch (error) {
-      console.log(error);
+    if (action === "register") {
+      try {
+        await axios.post(
+          "/registros",
+          { ...date, data: dataCorreta, type },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
+    handleClose();
+    listBillings();
   };
+
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
       <Grid
