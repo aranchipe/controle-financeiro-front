@@ -16,6 +16,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { format } from "date-fns";
 import axios from "../../services/axios";
 import { getItem } from "../../utils/storage";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const schema = object({
   description: string().required("Campo obrigatório."),
@@ -31,7 +33,11 @@ export default function RegisterForm({
   handleClose,
   listBillings,
   action,
+  registroId,
+  registro,
 }) {
+  console.log(registro);
+
   const token = getItem("token");
   const {
     register,
@@ -40,12 +46,52 @@ export default function RegisterForm({
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
+  const [form, setForm] = useState({
+    description: "",
+    data: "",
+    value: "",
+    type: "",
+  });
+
+  useEffect(() => {
+    setForm({
+      description: registro && registro.description,
+      data: registro && registro.data,
+      value: registro && registro.value,
+      type: registro && registro.type,
+    });
+  }, [registro]);
+  /* const detailRegistro = async () => {
+    try {
+      const response = await axios.get(`/registro/${registroId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setRegistro(response.data);
+    } catch (error) {}
+  }; */
+
   const handleSubmit = async (date) => {
     const dataCorreta = format(date.data, "dd-MM-yyyy");
     if (action === "register") {
       try {
         await axios.post(
           "/registros",
+          { ...date, data: dataCorreta, type },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (action === "edit") {
+      try {
+        await axios.put(
+          `/registro/${registroId}`,
           { ...date, data: dataCorreta, type },
           {
             headers: {
@@ -72,7 +118,7 @@ export default function RegisterForm({
       >
         <Grid item md={12} lg={12}>
           <FormControl error={errors?.description ? true : false} fullWidth>
-            <InputLabel>Descrição</InputLabel>
+            <InputLabel>{form.description}</InputLabel>
             <OutlinedInput
               type="text"
               {...register("description")}

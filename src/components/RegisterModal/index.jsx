@@ -17,9 +17,16 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ open, setOpen, listBillings, action }) {
+export default function BasicModal({
+  open,
+  setOpen,
+  listBillings,
+  action,
+  registroId,
+  registro,
+  item,
+}) {
   const handleClose = () => setOpen(false);
-
   return (
     <div>
       <Modal
@@ -33,6 +40,9 @@ export default function BasicModal({ open, setOpen, listBillings, action }) {
             listBillings={listBillings}
             handleClose={handleClose}
             action={action}
+            registroId={registroId}
+            registro={registro}
+            item={item}
           />
         </Box>
       </Modal>

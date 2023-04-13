@@ -17,7 +17,7 @@ function Dashboard() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const [showContent, setShowContent] = useState(false);
-  const [openDashboard, setOpenDashboard] = useState(false);
+  const [openDashboard, setOpenDashboard] = useState(0);
   const [userName, setUserName] = useState("");
   const [registros, setRegistros] = useState([]);
 
@@ -55,7 +55,13 @@ function Dashboard() {
     setRegistros(response.data);
   };
   return (
-    <div className={openDashboard ? "dashboard_1" : "dashboard_2"}>
+    <div
+      className={
+        openDashboard === 0 || openDashboard === 1
+          ? "dashboard_1"
+          : "dashboard_2"
+      }
+    >
       <Typography
         sx={{
           position: "absolute",
@@ -102,7 +108,9 @@ function Dashboard() {
 
       <div
         className={
-          openDashboard
+          openDashboard === 0
+            ? " dashboard_3"
+            : openDashboard === 1
             ? " dashboard-content dashboard-content-aberto"
             : " dashboard-content dashboard-content-fechado"
         }
@@ -118,7 +126,7 @@ function Dashboard() {
           fontSize="large"
           onClick={() => {
             setShowContent(false);
-            setOpenDashboard(false);
+            setOpenDashboard(2);
           }}
         />
         <Card listBillings={listBillings} registros={registros} numberMes={0} />
@@ -158,7 +166,7 @@ function Dashboard() {
         }}
         onClick={() => {
           setShowContent(true);
-          setOpenDashboard(true);
+          setOpenDashboard(1);
         }}
       />
     </div>

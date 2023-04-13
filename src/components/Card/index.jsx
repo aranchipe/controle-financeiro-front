@@ -43,7 +43,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function Card({ numberMes, registros }) {
+export default function Card({ numberMes, registros, listBillings }) {
   const [saida, setSaida] = useState(0);
   const token = getItem("token");
   const [open, setOpen] = useState(false);
@@ -54,6 +54,7 @@ export default function Card({ numberMes, registros }) {
   const handleOpenFreeMonay = () => setOpenFreeMonay(true);
   const [savedMes, setSavedMes] = useState(0);
   const [registroId, setRegistroId] = useState();
+  const [registro, setRegistro] = useState();
 
   useEffect(() => {
     saidasMes();
@@ -120,6 +121,17 @@ export default function Card({ numberMes, registros }) {
     } catch (error) {}
   };
 
+  const detailRegistro = async (id) => {
+    try {
+      const response = await axios.get(`/registro/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setRegistro(response.data);
+    } catch (error) {}
+  };
+
   return (
     <Grid
       sx={{
@@ -175,12 +187,11 @@ export default function Card({ numberMes, registros }) {
                         cursor: "pointer",
                         ":hover": { transform: "scale(1.1)" },
                       }}
-                      onClick={() => setOpenRegisterModal(true)}
-                    />
-                    <RegisterModal
-                      open={openRegisterModal}
-                      setOpen={setOpenRegisterModal}
-                      action="edit"
+                      onClick={() => {
+                        setOpenRegisterModal(true);
+                        setRegistroId(item.id);
+                        detailRegistro(item.id);
+                      }}
                     />
                     <DeleteIcon
                       sx={{
@@ -192,6 +203,14 @@ export default function Card({ numberMes, registros }) {
                         setOpenDeleteModal(true);
                         setRegistroId(item.id);
                       }}
+                    />
+                    <RegisterModal
+                      open={openRegisterModal}
+                      setOpen={setOpenRegisterModal}
+                      action="edit"
+                      registroId={registroId}
+                      listBillings={listBillings}
+                      registro={registro}
                     />
                   </Box>
                 </StyledTableCell>
@@ -274,7 +293,7 @@ export default function Card({ numberMes, registros }) {
         openDeleteModal={openDeleteModal}
         setOpenDeleteModal={setOpenDeleteModal}
         registroId={registroId}
-        listBillings
+        listBillings={listBillings}
       />
     </Grid>
   );

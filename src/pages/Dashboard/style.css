@@ -21,6 +21,20 @@
   overflow-y: hidden;
 }
 
+.dashboard_3 {
+  border-radius: 60px 60px 0 0;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 50px;
+  padding: 55px 105px;
+  position: absolute;
+  z-index: 2;
+  overflow-y: hidden;
+  top: 100%
+}
+
 .dashboard-content {
   border-radius: 60px 60px 0 0;
   background-color: white;
@@ -34,6 +48,8 @@
   overflow-y: hidden;
 
 }
+
+
 
 .dashboard-content-aberto {
   animation: dashboard-aberto 1s both;
