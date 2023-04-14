@@ -14,7 +14,6 @@ import { Typography, Grid } from "@mui/material";
 import { format } from "date-fns";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import SaveModal from "../../components/SaveModal";
 import porquinho from "../../assets/porquinho.svg";
@@ -52,9 +51,10 @@ export default function Card({ numberMes, registros, listBillings }) {
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleOpenFreeMonay = () => setOpenFreeMonay(true);
-  const [savedMes, setSavedMes] = useState(0);
+  const [savedMes, setSavedMes] = useState(-1);
   const [registroId, setRegistroId] = useState();
   const [registro, setRegistro] = useState();
+  const [typeModal, setTypeModal] = useState();
 
   useEffect(() => {
     saidasMes();
@@ -121,7 +121,7 @@ export default function Card({ numberMes, registros, listBillings }) {
     } catch (error) {}
   };
 
-  const detailRegistro = async (id) => {
+  /* const detailRegistro = async (id) => {
     try {
       const response = await axios.get(`/registro/${id}`, {
         headers: {
@@ -130,7 +130,7 @@ export default function Card({ numberMes, registros, listBillings }) {
       });
       setRegistro(response.data);
     } catch (error) {}
-  };
+  }; */
 
   return (
     <Grid
@@ -189,8 +189,8 @@ export default function Card({ numberMes, registros, listBillings }) {
                       }}
                       onClick={() => {
                         setOpenRegisterModal(true);
-                        setRegistroId(item.id);
-                        detailRegistro(item.id);
+                        setRegistro(item);
+                        /* detailRegistro(item.id); */
                       }}
                     />
                     <DeleteIcon
@@ -235,7 +235,10 @@ export default function Card({ numberMes, registros, listBillings }) {
                 color: "black",
               }}
               fullWidth
-              onClick={handleOpen}
+              onClick={() => {
+                handleOpenFreeMonay();
+                setTypeModal("guardado");
+              }}
             >
               <img src={porquinho} style={{ width: "50px" }} />
             </Button>
@@ -269,7 +272,10 @@ export default function Card({ numberMes, registros, listBillings }) {
                 color: "black",
                 ":hover": { background: "#23C841" },
               }}
-              onClick={handleOpenFreeMonay}
+              onClick={() => {
+                handleOpenFreeMonay();
+                setTypeModal("livre");
+              }}
               fullWidth
             >
               <img src={carteira} alt="carteira" style={{ width: "50px" }} />
@@ -288,6 +294,7 @@ export default function Card({ numberMes, registros, listBillings }) {
         openFreeMonay={openFreeMonay}
         setOpenFreeMonay={setOpenFreeMonay}
         savedMes={savedMes}
+        typeModal={typeModal}
       />
       <DeleteModal
         openDeleteModal={openDeleteModal}

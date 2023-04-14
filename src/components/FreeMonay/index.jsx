@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import dinheiroLivre from "../../assets/dinheiro_livre.svg";
+import dinheiroGuardado from "../../assets/dinheiro_guardado.svg";
 
 const style = {
   position: "absolute",
@@ -19,9 +20,10 @@ export default function FreeMonay({
   openFreeMonay,
   setOpenFreeMonay,
   savedMes,
+  typeModal,
 }) {
   const handleClose = () => setOpenFreeMonay(false);
-
+  const numero = 1;
   return (
     <div>
       <Modal
@@ -44,7 +46,7 @@ export default function FreeMonay({
       >
         <Box sx={{ position: "relative" }}>
           <img
-            src={dinheiroLivre}
+            src={typeModal === "livre" ? dinheiroLivre : dinheiroGuardado}
             alt="dinheiro-livre"
             style={{ width: "30vw" }}
           />
@@ -64,7 +66,7 @@ export default function FreeMonay({
                 fontWeight: "bold",
               }}
             >
-              {savedMes}
+              {typeModal === "livre" ? "" : savedMes}
             </Typography>
           </Box>
         </Box>

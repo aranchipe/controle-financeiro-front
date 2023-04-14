@@ -24,7 +24,6 @@ export default function BasicModal({
   action,
   registroId,
   registro,
-  item,
 }) {
   const handleClose = () => setOpen(false);
   return (
@@ -42,7 +41,6 @@ export default function BasicModal({
             action={action}
             registroId={registroId}
             registro={registro}
-            item={item}
           />
         </Box>
       </Modal>

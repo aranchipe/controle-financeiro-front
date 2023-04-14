@@ -12,13 +12,13 @@ export default function TabsComponent({
   action,
   registroId,
   registro,
-  item,
 }) {
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  console.log(registro);
 
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
@@ -37,7 +37,6 @@ export default function TabsComponent({
             action={action}
             registroId={registroId}
             registro={registro}
-            item={item}
           />
         </TabPanel>
         <TabPanel value="2">
@@ -48,7 +47,6 @@ export default function TabsComponent({
             action={action}
             registroId={registroId}
             registro={registro}
-            item={item}
           />
         </TabPanel>
       </TabContext>

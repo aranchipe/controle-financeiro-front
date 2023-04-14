@@ -105,7 +105,6 @@ function Dashboard() {
         setOpen={setOpen}
         action="register"
       />
-
       <div
         className={
           openDashboard === 0

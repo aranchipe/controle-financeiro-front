@@ -35,9 +35,8 @@ export default function RegisterForm({
   action,
   registroId,
   registro,
+  item,
 }) {
-  console.log(registro);
-
   const token = getItem("token");
   const {
     register,
@@ -45,22 +44,21 @@ export default function RegisterForm({
     handleSubmit: onSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+  /* const [form, setForm] = useState({
+    description: item.description,
+    data: item.data,
+    value: item.value,
+    type: item.type,
+  }); */
 
-  const [form, setForm] = useState({
-    description: "",
-    data: "",
-    value: "",
-    type: "",
-  });
-
-  useEffect(() => {
+  /* useEffect(() => {
     setForm({
       description: registro && registro.description,
       data: registro && registro.data,
       value: registro && registro.value,
       type: registro && registro.type,
     });
-  }, [registro]);
+  }, [registro]); */
   /* const detailRegistro = async () => {
     try {
       const response = await axios.get(`/registro/${registroId}`, {
@@ -71,7 +69,6 @@ export default function RegisterForm({
       setRegistro(response.data);
     } catch (error) {}
   }; */
-
   const handleSubmit = async (date) => {
     const dataCorreta = format(date.data, "dd-MM-yyyy");
     if (action === "register") {
@@ -91,7 +88,7 @@ export default function RegisterForm({
     } else if (action === "edit") {
       try {
         await axios.put(
-          `/registro/${registroId}`,
+          `/registro/${registro.id}`,
           { ...date, data: dataCorreta, type },
           {
             headers: {
@@ -118,7 +115,7 @@ export default function RegisterForm({
       >
         <Grid item md={12} lg={12}>
           <FormControl error={errors?.description ? true : false} fullWidth>
-            <InputLabel>{form.description}</InputLabel>
+            <InputLabel>Descrição</InputLabel>
             <OutlinedInput
               type="text"
               {...register("description")}
@@ -130,6 +127,7 @@ export default function RegisterForm({
               }
               placeholder="Descrição"
               label="Descrição"
+              defaultValue={action === "edit" ? registro.description : ""}
             />
             <FormHelperText>
               {errors?.description?.message?.toString() || " "}
@@ -151,6 +149,11 @@ export default function RegisterForm({
               endAdornment={<InputAdornment position="end"></InputAdornment>}
               placeholder="Data"
               label="Data"
+              defaultValue={
+                action === "edit"
+                  ? format(new Date(registro.data), "yyyy-MM-dd")
+                  : ""
+              }
             />
             <FormHelperText>
               {errors?.data?.message?.toString() || " "}
@@ -172,6 +175,7 @@ export default function RegisterForm({
               endAdornment={<InputAdornment position="end"></InputAdornment>}
               placeholder="Valor"
               label="Valor"
+              defaultValue={action === "edit" ? registro.value : ""}
             />
             <FormHelperText>
               {errors?.value?.message?.toString() || " "}

@@ -88,6 +88,7 @@ export default function DeleteModal({
                   color: "rgb(82, 82, 82)",
                   fontWeight: "bold",
                 }}
+                onClick={handleClose}
               >
                 Não
               </Button>
