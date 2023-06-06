@@ -1,5 +1,4 @@
 import Modal from "@mui/material/Modal";
-
 import { yupResolver } from "@hookform/resolvers/yup";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { getItem } from "../../utils/storage";
@@ -27,7 +26,7 @@ const schema = object({
   value: string().required("Campo obrigatório."),
 });
 
-export default function SaveModal({ open, setOpen, mes }) {
+export function SaveModal({ open, setOpen, mes }) {
   const [loading, setLoading] = useState(false);
 
   const token = getItem("token");
