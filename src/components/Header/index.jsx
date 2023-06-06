@@ -1,7 +1,5 @@
 import Box from "@mui/material/Box";
 import { CardMedia, Typography } from "@mui/material";
-import { clear } from "../../utils/storage";
-import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import { useState } from "react";

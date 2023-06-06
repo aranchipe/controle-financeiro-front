@@ -1,6 +1,6 @@
 import * as React from "react";
 import Modal from "@mui/material/Modal";
-import { Grid, Box, TextField, CardMedia, Typography } from "@mui/material";
+import { Grid, Box, TextField, CardMedia } from "@mui/material";
 import mao from "../../assets/mao.svg";
 import porquinho from "../../assets/porquinho2.svg";
 import carteiraAberta from "../../assets/carteira_aberta.svg";
@@ -13,16 +13,6 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { object, string } from "yup";
 import { amountFormat } from "../../utils/amountMask";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  display: "flex",
-};
 
 const schema = object({
   value: string().required("Campo obrigatório."),

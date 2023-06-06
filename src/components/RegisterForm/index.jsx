@@ -17,7 +17,7 @@ import { format } from "date-fns";
 import axios from "../../services/axios";
 import { getItem } from "../../utils/storage";
 import { amountFormat } from "../../utils/amountMask";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { notifyError, notifySucess } from "../../utils/toast";
 
 const schema = object({
@@ -36,13 +36,11 @@ export default function RegisterForm({
   action,
   registro,
 }) {
-  const [loading, setLoading] = useState(false);
-
   const token = getItem("token");
   const {
-    register, //Registra o dado
-    watch, //Assiste o dado
-    setValue, //Seta um novo valor para o dado
+    register,
+    watch,
+    setValue,
     getValues,
     handleSubmit: onSubmit,
     formState: { errors },
@@ -59,7 +57,6 @@ export default function RegisterForm({
 
   const handleSubmit = async (date) => {
     const dataCorreta = format(date.data, "dd-MM-yyyy");
-    setLoading(true); //Ativar o carregamento
     if (action === "register") {
       try {
         const response = await axios.post(
@@ -110,7 +107,6 @@ export default function RegisterForm({
     }
     handleClose();
     listBillings();
-    setLoading(false); //Ativar o carregamento
   };
 
   return (

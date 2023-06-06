@@ -10,7 +10,7 @@ import axios from "../../services/axios";
 import { getItem, clear } from "../../utils/storage";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/system";
-import { Typography, Grid } from "@mui/material";
+import { Typography, Grid, CardMedia } from "@mui/material";
 import { format } from "date-fns";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -52,7 +52,6 @@ export default function Card({ numberMes, registros, listBillings }) {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
   const [openDinheiroAtualModal, setOpenDinheiroAtualModal] = useState(false);
-  const handleOpen = () => setOpen(true);
   const handleOpenFreeMonay = () => setOpenFreeMonay(true);
   const [savedMes, setSavedMes] = useState(0);
   const [dinheiroAtualMes, setDinheiroAtualMes] = useState(0);
@@ -369,7 +368,7 @@ export default function Card({ numberMes, registros, listBillings }) {
               listSaved();
             }}
           >
-            <img src={porquinho} style={{ width: "50px" }} />
+            <CardMedia component="img" src={porquinho} sx={{ width: "50px" }} />
           </Button>
         </Box>
 

@@ -69,7 +69,7 @@ export default function DinheiroAtualModal({ open, setOpen, mes }) {
           {
             month: mes,
             value:
-              parseFloat(dados.value.replace(",", "").replace(".", "")) == 0
+              parseFloat(dados.value.replace(",", "").replace(".", "")) === 0
                 ? "0"
                 : parseFloat(dados.value.replace(",", "").replace(".", "")),
           },
@@ -94,7 +94,7 @@ export default function DinheiroAtualModal({ open, setOpen, mes }) {
           {
             month: mes,
             value:
-              parseFloat(dados.value.replace(",", "").replace(".", "")) == 0
+              parseFloat(dados.value.replace(",", "").replace(".", "")) === 0
                 ? "0"
                 : parseFloat(dados.value.replace(",", "").replace(".", "")),
           },
