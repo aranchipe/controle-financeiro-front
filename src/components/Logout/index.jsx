@@ -8,7 +8,7 @@ export default function Logout({ setLogoutModal }) {
   const navigate = useNavigate();
   const handleQuit = () => {
     clear();
-    navigate("/signin");
+    navigate("/");
   };
   return (
     <Box

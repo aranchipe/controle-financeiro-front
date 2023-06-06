@@ -31,11 +31,10 @@ function MainRoutes() {
       <Routes>
         <Route path="/">
           <Route path="/" element={<Signin />} />
-          <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
 
-        <Route element={<ProtectedRoutes redirectTo="/signin" />}>
+        <Route element={<ProtectedRoutes redirectTo="/" />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>

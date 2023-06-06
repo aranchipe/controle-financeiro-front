@@ -147,7 +147,7 @@ export default function Card({ numberMes, registros, listBillings }) {
       }
     } catch (error) {
       clear();
-      navigate("/signin");
+      navigate("/");
     }
   };
 
@@ -168,7 +168,7 @@ export default function Card({ numberMes, registros, listBillings }) {
       }
     } catch (error) {
       clear();
-      navigate("/signin");
+      navigate("/");
     }
   };
 

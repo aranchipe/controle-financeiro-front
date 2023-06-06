@@ -75,7 +75,7 @@ function Signup() {
         notifyError(response.data.mensagem);
       }
       notifySucess("Cadastro realizado com sucesso");
-      navigate("/signin");
+      navigate("/");
     } catch (error) {
       notifyError(error.response.data.mensagem);
     }
@@ -279,7 +279,7 @@ function Signup() {
                     color: "var(--button-color)",
                     ":hover": { color: "var(--button-hover)" },
                   }}
-                  onClick={() => navigate("/signin")}
+                  onClick={() => navigate("/")}
                 >
                   {" "}
                   Faça login

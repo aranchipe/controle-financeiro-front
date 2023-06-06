@@ -74,7 +74,7 @@ function Dashboard() {
       setTotalSaved(totalSaved);
     } catch (error) {
       clear();
-      navigate("/signin");
+      navigate("/");
     }
   };
   return (

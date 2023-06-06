@@ -23,52 +23,43 @@ const style = {
   p: 4,
   display: "flex",
 };
-//Validação dos campos do input, não precisa mais colocar as validações com o if que faziamos no curso
 const schema = object({
   value: string().required("Campo obrigatório."),
 });
 
 export default function SaveModal({ open, setOpen, mes }) {
-  //Usado para mostrar no botão uma animação de carregamento enquanto é feita a requisição
   const [loading, setLoading] = useState(false);
 
-  //Autoexplicativo esse
   const token = getItem("token");
   const [savedMesValue, setSavedMesValue] = useState();
   const [savedMesId, setSavedMesId] = useState();
   const handleClose = () => setOpen(false);
 
   const {
-    register, //Registra o dado
-    watch, //Assiste o dado
-    setValue, //Seta um novo valor para o dado
-    getValues, //Obtém o dado
-    handleSubmit: onSubmit, //Autoexplicativo
-    formState: { errors }, //Pega o erro gerado pelo schema
+    register,
+    watch,
+    setValue,
+    getValues,
+    handleSubmit: onSubmit,
+    formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema), //Linka o yup com o schema
+    resolver: yupResolver(schema),
   });
 
   useEffect(() => {
     listSaved();
   }, [open]);
 
-  //Estou assistindo o dado "userSalary"
   watch("value");
 
-  //Função para transforma em máscara de dinheiro
   const useWatchField = (field) => {
     useEffect(() => {
       setValue(field, amountFormat(watch(field)));
     }, [watch(field)]);
   };
 
-  //Executando a função e passando o campo que eu quero que execute essa função
-  //Obs: Como está sempre assintindo por causa do "watch('userSalary')" sempre vai ficar executando essa função enquanto tiver tendo modificação no input
   useWatchField("value");
 
-  //Autoexplicativo essa função
-  //Como linkamos lá em cima a função no useform, os dados são automaticamente gerado no primeiro parametro
   const handleSubmitNewCompany = async (dados) => {
     setLoading(true); //Ativar o carregamento
     if (savedMesValue) {
@@ -125,8 +116,6 @@ export default function SaveModal({ open, setOpen, mes }) {
     setOpen(false);
   };
 
-  /* console.log(getValues().value); */ // Consigo pegar o valor de um determinado dado através dessa função
-
   const listSaved = async () => {
     try {
       const response = await axios.get("/guardados", {
@@ -180,14 +169,14 @@ export default function SaveModal({ open, setOpen, mes }) {
         >
           <Grid
             container
-            component="form" // É preciso passar o "component="form"" para saber que se trata de um
+            component="form"
             sx={{
               display: "flex",
               alignItems: "center",
               flexDirection: "column",
               gap: 1,
             }}
-            onSubmit={onSubmit(handleSubmitNewCompany)} //Linkando o form com onsubmit do useform
+            onSubmit={onSubmit(handleSubmitNewCompany)}
           >
             <Typography
               sx={{
