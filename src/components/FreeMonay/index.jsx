@@ -46,14 +46,14 @@ export default function FreeMonay({
   const handleClose = () => setOpenFreeMonay(false);
 
   const {
-    register, //Registra o dado
-    watch, //Assiste o dado
-    setValue, //Seta um novo valor para o dado
-    getValues, //Obtém o dado
-    handleSubmit: onSubmit, //Autoexplicativo
-    formState: { errors }, //Pega o erro gerado pelo schema
+    register,
+    watch,
+    setValue,
+    getValues,
+    handleSubmit: onSubmit,
+    formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema), //Linka o yup com o schema
+    resolver: yupResolver(schema),
   });
 
   useEffect(() => {
@@ -291,7 +291,6 @@ export default function FreeMonay({
                     }
               }
             >
-              {/* Componente que já vem com ele embutido o loading e é só preciso passar a variavel que estamos setando na função do handlesubmit */}
               {typeModal === "guardado" ? (
                 <LoadingButton
                   type="submit"
@@ -305,7 +304,6 @@ export default function FreeMonay({
                     fontWeight: "bold",
                   }}
                 >
-                  {/* {savedMesValue ? "Atualizar" : "Guardar"} */}
                   <CardMedia
                     component="img"
                     src={porquinho}
@@ -326,56 +324,7 @@ export default function FreeMonay({
                 />
               )}
             </Grid>
-            {/* <Grid item md={10} lg={4}>
-              <TextField
-                sx={{
-                  borderRadius: "10px",
-
-                  "& input": {
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    fontSize: "20px",
-                    fontFamily: "font1",
-                  },
-                  "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "transparent",
-                  },
-                  background: "var(--button-hover)",
-                }}
-                value={
-                  typeModal === "livre"
-                    ? Number.isInteger(
-                        (dinheiroAtualMes - savedMes + entrada - saida) / 100
-                      )
-                      ? `R$ ${
-                          (dinheiroAtualMes - savedMes + entrada - saida) / 100
-                        }.00`
-                      : `R$ ${
-                          (dinheiroAtualMes - savedMes + entrada - saida) / 100
-                        }`
-                    : Number.isInteger(savedMes / 100)
-                    ? `R$ ${savedMes / 100}.00`
-                    : `R$ ${savedMes / 100}`
-                }
-              />
-            </Grid> */}
           </Grid>
-          {/* <Box
-            sx={{
-              display: { md: "none", lg: "flex" },
-              position: "absolute",
-              bottom: "0",
-              width: "35%",
-              justifyContent: " center",
-            }}
-          >
-            <CardMedia
-              component="img"
-              sx={typeModal !== "livre" ? { width: "100%" } : { width: "150%" }}
-              src={typeModal === "livre" ? carteiraAberta : porquinho}
-              alt="porquinho"
-            />
-          </Box> */}
         </Box>
       </Modal>
     </div>

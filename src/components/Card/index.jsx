@@ -38,7 +38,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
@@ -174,17 +173,6 @@ export default function Card({ numberMes, registros, listBillings }) {
     }
   };
 
-  /* const detailRegistro = async (id) => {
-    try {
-      const response = await axios.get(`/registro/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setRegistro(response.data);
-    } catch (error) {}
-  }; */
-
   return (
     <Grid
       sx={{
@@ -224,11 +212,7 @@ export default function Card({ numberMes, registros, listBillings }) {
         }}
         component={Paper}
       >
-        <Table
-        /* sx={{
-            minWidth: 400,
-          }} */
-        >
+        <Table>
           <TableHead>
             <TableRow sx={{ height: 50 }}>
               <StyledTableCell
@@ -286,7 +270,7 @@ export default function Card({ numberMes, registros, listBillings }) {
                   {item.description}
                 </StyledTableCell>
                 <StyledTableCell
-                  align="right" /* sx={{ px: 0 }} */
+                  align="right"
                   sx={{
                     fontFamily: "font1",
                     fontSize: { lg: "14px", xs: "10px" },
@@ -334,7 +318,6 @@ export default function Card({ numberMes, registros, listBillings }) {
                       onClick={() => {
                         setOpenRegisterModal(true);
                         setRegistro(item);
-                        /* detailRegistro(item.id); */
                       }}
                     />
                     <DeleteIcon

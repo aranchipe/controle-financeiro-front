@@ -23,54 +23,45 @@ const style = {
   p: 4,
   display: "flex",
 };
-//Validação dos campos do input, não precisa mais colocar as validações com o if que faziamos no curso
 const schema = object({
   value: string().required("Campo obrigatório."),
 });
 
 export default function DinheiroAtualModal({ open, setOpen, mes }) {
-  //Usado para mostrar no botão uma animação de carregamento enquanto é feita a requisição
   const [loading, setLoading] = useState(false);
 
-  //Autoexplicativo esse
   const token = getItem("token");
   const [dinheiroAtualMesValue, setDinheiroAtualMesValue] = useState();
   const [dinheiroAtualMesId, setDinheiroAtualMesId] = useState();
   const handleClose = () => setOpen(false);
 
   const {
-    register, //Registra o dado
-    watch, //Assiste o dado
-    setValue, //Seta um novo valor para o dado
-    getValues, //Obtém o dado
-    handleSubmit: onSubmit, //Autoexplicativo
-    formState: { errors }, //Pega o erro gerado pelo schema
+    register,
+    watch,
+    setValue,
+    getValues,
+    handleSubmit: onSubmit,
+    formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema), //Linka o yup com o schema
+    resolver: yupResolver(schema),
   });
 
   useEffect(() => {
     listDinheiroAtual();
   }, [open]);
 
-  //Estou assistindo o dado "userSalary"
   watch("value");
 
-  //Função para transforma em máscara de dinheiro
   const useWatchField = (field) => {
     useEffect(() => {
       setValue(field, amountFormat(watch(field)));
     }, [watch(field)]);
   };
 
-  //Executando a função e passando o campo que eu quero que execute essa função
-  //Obs: Como está sempre assintindo por causa do "watch('userSalary')" sempre vai ficar executando essa função enquanto tiver tendo modificação no input
   useWatchField("value");
 
-  //Autoexplicativo essa função
-  //Como linkamos lá em cima a função no useform, os dados são automaticamente gerado no primeiro parametro
   const handleSubmitNewCompany = async (dados) => {
-    setLoading(true); //Ativar o carregamento
+    setLoading(true);
     if (dinheiroAtualMesValue) {
       try {
         const response = await axios.put(
@@ -121,7 +112,7 @@ export default function DinheiroAtualModal({ open, setOpen, mes }) {
         return notifyError(error.response.data.mensagem);
       }
     }
-    setLoading(false); //Desativa o carregamento após a requisição
+    setLoading(false);
     setOpen(false);
   };
 
@@ -168,14 +159,14 @@ export default function DinheiroAtualModal({ open, setOpen, mes }) {
         >
           <Grid
             container
-            component="form" // É preciso passar o "component="form"" para saber que se trata de um
+            component="form"
             sx={{
               display: "flex",
               alignItems: "center",
               flexDirection: "column",
               gap: 1,
             }}
-            onSubmit={onSubmit(handleSubmitNewCompany)} //Linkando o form com onsubmit do useform
+            onSubmit={onSubmit(handleSubmitNewCompany)}
           >
             <Typography
               sx={{
@@ -201,7 +192,6 @@ export default function DinheiroAtualModal({ open, setOpen, mes }) {
               value={getValues().value}
             />
 
-            {/* Colocando o botão e controlando o tamanho da largura dele através do grid */}
             <Grid
               item
               xs={12}
@@ -213,7 +203,6 @@ export default function DinheiroAtualModal({ open, setOpen, mes }) {
                 mt: 2,
               }}
             >
-              {/* Componente que já vem com ele embutido o loading e é só preciso passar a variavel que estamos setando na função do handlesubmit */}
               <LoadingButton
                 type="submit"
                 variant="contained"

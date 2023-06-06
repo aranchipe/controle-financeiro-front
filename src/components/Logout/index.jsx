@@ -26,7 +26,6 @@ export default function Logout({ setLogoutModal }) {
         gap: 1,
         px: { lg: "0.5vw", xs: "2vw" },
       }}
-      /* onMouseLeave={() => setLogoutModal(false)} */
     >
       <CardMedia
         component="img"

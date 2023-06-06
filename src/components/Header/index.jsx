@@ -49,7 +49,6 @@ export default function Header({ userName, userEmail }) {
               ":hover": { transform: "scale(1.1)" },
             }}
             fontSize="large"
-            /* onMouseOver={() => setLogoutModal(true)} */
             onClick={() => setLogoutModal(!logoutModal)}
           />
           <Box>
