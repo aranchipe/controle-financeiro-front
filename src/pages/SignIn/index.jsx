@@ -117,18 +117,6 @@ export function Signin() {
             width: { lg: "25vw", xs: "80vw" },
           }}
         >
-          {/* <Typography
-            variant="h4"
-            sx={{
-              color: "var(--cor-primaria)",
-              marginBottom: "5vh",
-              fontFamily: "font1",
-            }}
-          >
-            Gerencie suas finanças
-          </Typography> */}
-          {/* <CardMedia component="img" src={cofre} sx={{ width: "50px" }} /> */}
-
           <Grid
             container
             spacing={{ lg: 2, xs: 1 }}

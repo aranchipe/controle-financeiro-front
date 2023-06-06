@@ -14,7 +14,6 @@ import { Box } from "@mui/system";
 import TotalSafe from "../../components/TotalSafe";
 import Header from "../../components/Header";
 import pigIcon from "../../assets/pig-icon.png";
-/* import { css } from "@emotion/react"; */
 
 function Dashboard() {
   const [open, setOpen] = useState(false);
@@ -25,32 +24,6 @@ function Dashboard() {
   const [registros, setRegistros] = useState([]);
   const [totalSaved, setTotalSaved] = useState(0);
   const [openTotalSafe, setOpenTotalSafe] = useState(false);
-
-  /*  const dashboardAbertoAnimation = css`
-    @keyframes dashboard-aberto {
-      0% {
-        top: 100%;
-      }
-      100% {
-        top: 18vh;
-      }
-    }
-  `;
-
-  const dashboardFechadoAnimation = css`
-    @keyframes dashboard-aberto {
-      0% {
-        top: 25vh;
-        opacity: 1;
-        display: block;
-      }
-      100% {
-        top: 100%;
-        opacity: 0;
-        display: none;
-      }
-    }
-  `; */
 
   const handleOpenTotalSafe = () => setOpenTotalSafe(true);
 
@@ -106,11 +79,6 @@ function Dashboard() {
   };
   return (
     <Box
-      /* className={
-        openDashboard === 0 || openDashboard === 1
-          ? "dashboard_1 "
-          : "dashboard_2 "
-      } */
       sx={
         openDashboard === 0 || openDashboard === 1
           ? {
@@ -221,49 +189,6 @@ function Dashboard() {
             ? " dashboard-content dashboard-content-aberto"
             : " dashboard-content dashboard-content-fechado"
         }
-        /* sx={
-          openDashboard === 0
-            ? {
-                borderRadius: "60px 60px 0 0",
-                width: "100vw",
-                display: "none",
-                alignItems: "center",
-                flexWrap: "wrap",
-                gap: "50px",
-                padding: " 55px 105px",
-                position: "absolute",
-                zIndex: "2",
-                overflowY: "hidden",
-                top: "100%",
-              }
-            : openDashboard === 1
-            ? {
-                animation: `${dashboardAbertoAnimation} 1s both`,
-                borderRadius: "60px 60px 0 0",
-                backgroundColor: "var(--cor-secundaria)",
-                display: "flex",
-                alignItems: "center",
-                flexWrap: "wrap",
-                gap: "50px",
-                padding: "55px 105px",
-                position: "absolute",
-                zIndex: "2",
-                overflowY: "hidden",
-              }
-            : {
-                animation: `${dashboardFechadoAnimation} 1s both`,
-                borderRadius: "60px 60px 0 0",
-                backgroundColor: "var(--cor-secundaria)",
-                display: "flex",
-                alignItems: "center",
-                flexWrap: "wrap",
-                gap: "50px",
-                padding: "55px 105px",
-                position: "absolute",
-                zIndex: "2",
-                overflowY: "hidden",
-              }
-        } */
       >
         <CloseIcon
           sx={{
