@@ -27,9 +27,8 @@ const schema = object({
   value: string().required("Campo obrigatório."),
 });
 
-export default function DinheiroAtualModal({ open, setOpen, mes }) {
+export function DinheiroAtualModal({ open, setOpen, mes }) {
   const [loading, setLoading] = useState(false);
-
   const token = getItem("token");
   const [dinheiroAtualMesValue, setDinheiroAtualMesValue] = useState();
   const [dinheiroAtualMesId, setDinheiroAtualMesId] = useState();

@@ -18,7 +18,7 @@ const schema = object({
   value: string().required("Campo obrigatório."),
 });
 
-export default function FreeMonay({
+export function FreeMonay({
   openFreeMonay,
   setOpenFreeMonay,
   savedMes,

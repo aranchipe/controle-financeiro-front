@@ -3,9 +3,9 @@ import { CardMedia, Typography } from "@mui/material";
 import logo from "../../assets/logo.png";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import { useState } from "react";
-import Logout from "../Logout";
+import { Logout } from "../Logout";
 
-export default function Header({ userName, userEmail }) {
+export function Header({ userName, userEmail }) {
   const [logoutModal, setLogoutModal] = useState(false);
 
   return (

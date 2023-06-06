@@ -4,7 +4,7 @@ import { CardMedia, Typography } from "@mui/material";
 import { clear } from "../../utils/storage";
 import { useNavigate } from "react-router-dom";
 
-export default function Logout({ setLogoutModal }) {
+export function Logout({ setLogoutModal }) {
   const navigate = useNavigate();
   const handleQuit = () => {
     clear();

@@ -4,7 +4,7 @@ import { Box, TextField, CardMedia } from "@mui/material";
 import { useEffect } from "react";
 import cofreAberto from "../../assets/cofre_aberto.svg";
 
-export default function TotalSafe({
+export function TotalSafe({
   openTotalSafe,
   setOpenTotalSafe,
   totalSaved,

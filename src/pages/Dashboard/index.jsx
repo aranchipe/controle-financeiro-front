@@ -1,8 +1,8 @@
 import "./style.css";
-import Card from "../../components/Card";
+import { Card } from "../../components/Card";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
-import RegisterModal from "../../components/RegisterModal";
+import { RegisterModal } from "../../components/RegisterModal";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { CardMedia, Typography } from "@mui/material";
@@ -11,11 +11,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../services/axios";
 import { getItem } from "../../utils/storage";
 import { Box } from "@mui/system";
-import TotalSafe from "../../components/TotalSafe";
-import Header from "../../components/Header";
+import { TotalSafe } from "../../components/TotalSafe";
+import { Header } from "../../components/Header";
 import pigIcon from "../../assets/pig-icon.png";
 
-function Dashboard() {
+export function Dashboard() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const [openDashboard, setOpenDashboard] = useState(0);
@@ -315,5 +315,3 @@ function Dashboard() {
     </Box>
   );
 }
-
-export default Dashboard;

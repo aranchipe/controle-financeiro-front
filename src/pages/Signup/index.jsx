@@ -40,7 +40,7 @@ const schema = object({
     .oneOf([ref("password"), null], "As senhas devem ser iguais."),
 });
 
-function Signup() {
+export function Signup() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -303,5 +303,3 @@ function Signup() {
     </Box>
   );
 }
-
-export default Signup;

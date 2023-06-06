@@ -29,7 +29,7 @@ const schema = object({
   value: string().required("Campo obrigatório."),
 });
 
-export default function RegisterForm({
+export function RegisterForm({
   type,
   handleClose,
   listBillings,

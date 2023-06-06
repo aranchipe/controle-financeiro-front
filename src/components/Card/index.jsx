@@ -18,9 +18,9 @@ import Button from "@mui/material/Button";
 import { SaveModal } from "../SaveModal";
 import porquinho from "../../assets/guardar.png";
 import carteira from "../../assets/carteira.png";
-import FreeMonay from "../FreeMonay";
-import DeleteModal from "../DeleteModal";
-import RegisterModal from "../../components/RegisterModal";
+import { FreeMonay } from "../FreeMonay";
+import { DeleteModal } from "../DeleteModal";
+import { RegisterModal } from "../RegisterModal";
 import { useNavigate } from "react-router-dom";
 import { DinheiroAtualModal } from "../DinheiroAtualModal";
 
@@ -43,7 +43,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function Card({ numberMes, registros, listBillings }) {
+export function Card({ numberMes, registros, listBillings }) {
   const [saida, setSaida] = useState(0);
   const [entrada, setEntrada] = useState(0);
   const token = getItem("token");

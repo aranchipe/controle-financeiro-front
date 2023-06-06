@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import TabsComponent from "../TabsComponent";
+import { TabsComponent } from "../TabsComponent";
 
 const style = {
   position: "absolute",
@@ -16,7 +16,7 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({
+export function RegisterModal({
   open,
   setOpen,
   listBillings,

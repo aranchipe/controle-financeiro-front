@@ -20,7 +20,7 @@ const style = {
   display: "flex",
 };
 
-export default function DeleteModal({
+export function DeleteModal({
   openDeleteModal,
   setOpenDeleteModal,
   registroId,

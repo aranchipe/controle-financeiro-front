@@ -1,7 +1,7 @@
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { Signin } from "./pages/Signin";
 import { Signup } from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
+import { Dashboard } from "./pages/Dashboard";
 import { getItem } from "./utils/storage";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -15,7 +15,7 @@ function ProtectedRoutes({ redirectTo }) {
   return token ? <Outlet /> : <Navigate to={redirectTo} />;
 }
 
-function MainRoutes() {
+export function MainRoutes() {
   const { openLoading } = useLoading();
 
   return (
@@ -41,5 +41,3 @@ function MainRoutes() {
     </>
   );
 }
-
-export default MainRoutes;
