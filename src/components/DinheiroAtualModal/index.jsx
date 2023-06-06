@@ -28,7 +28,7 @@ const schema = object({
   value: string().required("Campo obrigatório."),
 });
 
-export const DinheiroAtualModal = ({ open, setOpen, mes }) => {
+export default function DinheiroAtualModal({ open, setOpen, mes }) {
   //Usado para mostrar no botão uma animação de carregamento enquanto é feita a requisição
   const [loading, setLoading] = useState(false);
 
@@ -234,4 +234,4 @@ export const DinheiroAtualModal = ({ open, setOpen, mes }) => {
       </Modal>
     </div>
   );
-};
+}

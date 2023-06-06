@@ -28,7 +28,7 @@ const schema = object({
   value: string().required("Campo obrigatório."),
 });
 
-export const SaveModal = ({ open, setOpen, mes }) => {
+export default function SaveModal({ open, setOpen, mes }) {
   //Usado para mostrar no botão uma animação de carregamento enquanto é feita a requisição
   const [loading, setLoading] = useState(false);
 
@@ -212,24 +212,7 @@ export const SaveModal = ({ open, setOpen, mes }) => {
               }
               value={getValues().value}
             />
-            {/* {savedMesValue && (
-              <DeleteIcon
-                sx={{
-                  color: "red",
-                  cursor: "pointer",
-                  ":hover": { transform: "scale(1.1)" },
-                }}
-                onClick={() => {
-                  deleteSaved();
-                  listSaved();
-                  setSavedMesValue("");
 
-                  handleClose();
-                }}
-              />
-            )} */}
-
-            {/* Colocando o botão e controlando o tamanho da largura dele através do grid */}
             <Grid
               item
               xs={12}
@@ -241,7 +224,6 @@ export const SaveModal = ({ open, setOpen, mes }) => {
                 mt: 2,
               }}
             >
-              {/* Componente que já vem com ele embutido o loading e é só preciso passar a variavel que estamos setando na função do handlesubmit */}
               <LoadingButton
                 type="submit"
                 variant="contained"
@@ -262,4 +244,4 @@ export const SaveModal = ({ open, setOpen, mes }) => {
       </Modal>
     </div>
   );
-};
+}

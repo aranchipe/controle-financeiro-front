@@ -3,15 +3,6 @@ import Modal from "@mui/material/Modal";
 import { Box, TextField, CardMedia } from "@mui/material";
 import { useEffect } from "react";
 import cofreAberto from "../../assets/cofre_aberto.svg";
-/* const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  display: "flex",
-}; */
 
 export default function TotalSafe({
   openTotalSafe,
