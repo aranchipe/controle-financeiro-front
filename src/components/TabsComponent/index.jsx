@@ -12,19 +12,19 @@ export default function TabsComponent({
   action,
   registroId,
   registro,
+  setRegistro,
 }) {
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  console.log(registro);
 
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <TabList onChange={handleChange}>
             <Tab label="entrada" value="1" />
             <Tab label="saida" value="2" />
           </TabList>
@@ -37,6 +37,7 @@ export default function TabsComponent({
             action={action}
             registroId={registroId}
             registro={registro}
+            setRegistro={setRegistro}
           />
         </TabPanel>
         <TabPanel value="2">
@@ -47,6 +48,7 @@ export default function TabsComponent({
             action={action}
             registroId={registroId}
             registro={registro}
+            setRegistro={setRegistro}
           />
         </TabPanel>
       </TabContext>

@@ -1,7 +1,13 @@
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
-import SignIn from "./pages/SignIn";
+import { Signin } from "./pages/Signin";
+import { Signup } from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import { getItem } from "./utils/storage";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useLoading } from "./hooks/useLoading";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ProtectedRoutes({ redirectTo }) {
   const token = getItem("token");
@@ -10,17 +16,30 @@ function ProtectedRoutes({ redirectTo }) {
 }
 
 function MainRoutes() {
-  return (
-    <Routes>
-      <Route path="/">
-        <Route path="/" element={<SignIn />} />
-        <Route path="/signin" element={<SignIn />} />
-      </Route>
+  const { openLoading } = useLoading();
 
-      <Route element={<ProtectedRoutes redirectTo="/signin" />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Route>
-    </Routes>
+  return (
+    <>
+      <ToastContainer />
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openLoading}
+      >
+        <CircularProgress sx={{ color: "var(--cor-primaria)" }} />
+      </Backdrop>
+
+      <Routes>
+        <Route path="/">
+          <Route path="/" element={<Signin />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
+        </Route>
+
+        <Route element={<ProtectedRoutes redirectTo="/signin" />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
+      </Routes>
+    </>
   );
 }
 

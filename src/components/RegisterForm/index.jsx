@@ -10,14 +10,15 @@ import {
   Typography,
 } from "@mui/material";
 import Button from "@mui/material/Button";
-import { date, object, string, number } from "yup";
+import { date, object, string } from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { format } from "date-fns";
 import axios from "../../services/axios";
 import { getItem } from "../../utils/storage";
-import { useState } from "react";
-import { useEffect } from "react";
+import { amountFormat } from "../../utils/amountMask";
+import { useEffect, useState } from "react";
+import { notifyError, notifySucess } from "../../utils/toast";
 
 const schema = object({
   description: string().required("Campo obrigatório."),
@@ -25,7 +26,7 @@ const schema = object({
     .nullable()
     .required("Campo obrigatório.")
     .typeError("Campo obrigatório."),
-  value: number().required("Campo obrigatório."),
+  value: string().required("Campo obrigatório."),
 });
 
 export default function RegisterForm({
@@ -33,75 +34,83 @@ export default function RegisterForm({
   handleClose,
   listBillings,
   action,
-  registroId,
   registro,
-  item,
 }) {
+  const [loading, setLoading] = useState(false);
+
   const token = getItem("token");
   const {
-    register,
+    register, //Registra o dado
+    watch, //Assiste o dado
+    setValue, //Seta um novo valor para o dado
     getValues,
     handleSubmit: onSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
-  /* const [form, setForm] = useState({
-    description: item.description,
-    data: item.data,
-    value: item.value,
-    type: item.type,
-  }); */
 
-  /* useEffect(() => {
-    setForm({
-      description: registro && registro.description,
-      data: registro && registro.data,
-      value: registro && registro.value,
-      type: registro && registro.type,
-    });
-  }, [registro]); */
-  /* const detailRegistro = async () => {
-    try {
-      const response = await axios.get(`/registro/${registroId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setRegistro(response.data);
-    } catch (error) {}
-  }; */
+  watch("value");
+
+  const useWatchField = (field) => {
+    useEffect(() => {
+      setValue(field, amountFormat(watch(field)));
+    }, [watch(field)]);
+  };
+  useWatchField("value");
+
   const handleSubmit = async (date) => {
     const dataCorreta = format(date.data, "dd-MM-yyyy");
+    setLoading(true); //Ativar o carregamento
     if (action === "register") {
       try {
-        await axios.post(
+        const response = await axios.post(
           "/registros",
-          { ...date, data: dataCorreta, type },
+          {
+            ...date,
+            value: parseFloat(date.value.replace(/\./g, "").replace(",", "")),
+            data: dataCorreta,
+            type,
+          },
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
+        if (response.status >= 400) {
+          notifyError(response.data.mensagem);
+        }
+
+        notifySucess("Registro adicionado com sucesso");
       } catch (error) {
-        console.log(error);
+        return notifyError(error.response.data.mensagem);
       }
     } else if (action === "edit") {
       try {
-        await axios.put(
+        const response = await axios.put(
           `/registro/${registro.id}`,
-          { ...date, data: dataCorreta, type },
+          {
+            ...date,
+            value: parseFloat(date.value.replace(/\./g, "").replace(",", "")),
+            data: dataCorreta,
+            type,
+          },
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
+        if (response.status >= 400) {
+          notifyError(response.data.mensagem);
+        }
+        notifySucess("Registro atualizado com sucesso");
       } catch (error) {
-        console.log(error);
+        return notifyError(error.response.data.mensagem);
       }
     }
     handleClose();
     listBillings();
+    setLoading(false); //Ativar o carregamento
   };
 
   return (
@@ -164,17 +173,23 @@ export default function RegisterForm({
           <FormControl error={errors?.value ? true : false} fullWidth>
             <InputLabel>Valor</InputLabel>
             <OutlinedInput
-              type="number"
-              {...register("value")}
+              fullWidth
+              type="text"
+              {...register(`value`)}
               startAdornment={
                 <InputAdornment
                   position="start"
                   sx={{ color: "rgba(150, 165, 171, 0.5)" }}
                 ></InputAdornment>
               }
-              endAdornment={<InputAdornment position="end"></InputAdornment>}
               placeholder="Valor"
               label="Valor"
+              error={errors?.value ? true : false}
+              helperText={
+                <Typography component="span" sx={{ fontSize: "1.0rem" }}>
+                  {errors?.value?.message?.toString() || " "}
+                </Typography>
+              }
               defaultValue={action === "edit" ? registro.value : ""}
             />
             <FormHelperText>
@@ -190,8 +205,21 @@ export default function RegisterForm({
             marginTop: 10,
           }}
         >
-          <Grid item lg={4} md={12}>
-            <Button variant="contained" fullWidth type="submit">
+          <Grid item lg={6} md={12}>
+            <Button
+              variant="contained"
+              fullWidth
+              type="submit"
+              onClick={() => {
+                console.log(parseFloat(getValues().value.replace(",", "")));
+              }}
+              sx={{
+                background: "var(--button-color)",
+                ":hover": { background: "var(--button-hover)" },
+                color: "black",
+                fontWeight: "bold",
+              }}
+            >
               Cadastrar
             </Button>
           </Grid>

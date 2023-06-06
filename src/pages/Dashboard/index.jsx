@@ -5,33 +5,64 @@ import { useEffect, useState } from "react";
 import RegisterModal from "../../components/RegisterModal";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import { Typography } from "@mui/material";
+import { CardMedia, Typography } from "@mui/material";
 import { clear } from "../../utils/storage";
 import { useNavigate } from "react-router-dom";
 import axios from "../../services/axios";
 import { getItem } from "../../utils/storage";
-import exit from "../../assets/exit.svg";
 import { Box } from "@mui/system";
+import TotalSafe from "../../components/TotalSafe";
+import Header from "../../components/Header";
+import pigIcon from "../../assets/pig-icon.png";
+/* import { css } from "@emotion/react"; */
 
 function Dashboard() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const [showContent, setShowContent] = useState(false);
   const [openDashboard, setOpenDashboard] = useState(0);
   const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [registros, setRegistros] = useState([]);
+  const [totalSaved, setTotalSaved] = useState(0);
+  const [openTotalSafe, setOpenTotalSafe] = useState(false);
+
+  /*  const dashboardAbertoAnimation = css`
+    @keyframes dashboard-aberto {
+      0% {
+        top: 100%;
+      }
+      100% {
+        top: 18vh;
+      }
+    }
+  `;
+
+  const dashboardFechadoAnimation = css`
+    @keyframes dashboard-aberto {
+      0% {
+        top: 25vh;
+        opacity: 1;
+        display: block;
+      }
+      100% {
+        top: 100%;
+        opacity: 0;
+        display: none;
+      }
+    }
+  `; */
+
+  const handleOpenTotalSafe = () => setOpenTotalSafe(true);
 
   const mesAtual = new Date().getMonth();
   const navigate = useNavigate();
-  const handleQuit = () => {
-    clear();
-    navigate("/signin");
-  };
+
   const token = getItem("token");
 
   useEffect(() => {
     userDetail();
     listBillings();
+    listSaved();
   }, []);
 
   const userDetail = async () => {
@@ -43,6 +74,7 @@ function Dashboard() {
       });
 
       setUserName(response.data.name);
+      setUserEmail(response.data.email);
     } catch (error) {}
   };
 
@@ -54,51 +86,127 @@ function Dashboard() {
     });
     setRegistros(response.data);
   };
+
+  const listSaved = async () => {
+    try {
+      const response = await axios.get("/guardados", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      let totalSaved = 0;
+      for (let i = 0; i < response.data.length; i++) {
+        totalSaved = totalSaved + Number(response.data[i].value);
+      }
+      setTotalSaved(totalSaved);
+    } catch (error) {
+      clear();
+      navigate("/signin");
+    }
+  };
   return (
-    <div
-      className={
+    <Box
+      /* className={
         openDashboard === 0 || openDashboard === 1
-          ? "dashboard_1"
-          : "dashboard_2"
+          ? "dashboard_1 "
+          : "dashboard_2 "
+      } */
+      sx={
+        openDashboard === 0 || openDashboard === 1
+          ? {
+              minHeight: "100vh",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "sticky",
+              px: { lg: "20vw", xs: "10vw" },
+              maxWidth: "100vw",
+            }
+          : {
+              height: "100vh",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              px: { lg: "20vw", xs: "10vw" },
+              position: "sticky",
+              overflowY: "hidden",
+              maxWidth: "100vw",
+            }
       }
     >
-      <Typography
+      <Header userName={userName} userEmail={userEmail} />
+      <Box sx={{ color: "var(--cor-primaria)", width: "100%" }}>
+        <Typography
+          sx={{
+            fontFamily: "font1",
+            fontSize: "28px",
+            marginBottom: "2%",
+            display: { lg: "block", xs: "none" },
+          }}
+        >
+          Esse é seu <b>MOMENTO!</b>
+        </Typography>
+        <Typography
+          sx={{
+            fontFamily: "font1",
+            fontSize: "18px",
+            marginBottom: "2%",
+            display: { lg: "block", xs: "none" },
+          }}
+        >
+          "Desperte o potencial do dinheiro e transforme-o em seu aliado na
+          busca pela realização <br /> pessoal e liberdade financeira."
+        </Typography>
+      </Box>
+
+      <Box
         sx={{
+          display: "flex",
+          gap: 1,
+          width: "100%",
+          height: "4.7vh",
+          justifyContent: "end",
+          marginBottom: "1vh",
           position: "absolute",
-          left: "35px",
-          top: "30px",
-          fontFamily: "cursive",
+          top: { lg: "20vh", xs: "15vh" },
+          right: "10vw",
         }}
       >
-        Seja bem vindo {userName}
-      </Typography>
-      <img
-        src={exit}
-        alt="exit"
-        onClick={handleQuit}
-        style={{
-          position: "absolute",
-          width: "50px",
-          top: "50px",
-          left: "20px",
-          cursor: "pointer",
-        }}
-      />
-      <Button
-        variant="contained"
-        size="large"
-        sx={{
-          background:
-            "linear-gradient(90.23deg, #cbee60 0.02%, #f4e404 99.63%)",
-          color: "black",
-          position: "absolute",
-          right: "100px",
-          top: "150px",
-        }}
-        onClick={handleOpen}
-      >
-        Adicionar Registro
-      </Button>
+        <Button
+          sx={{
+            background: "var(--cor-primaria)",
+            color: "white",
+            fontWeight: "bold",
+            fontFamily: "font1",
+            boxShadow: "0px 5px 4px rgba(0, 0, 0, 0.25)",
+            ":hover": { background: "var(--button-hover)" },
+            borderRadius: "50px",
+            px: "1vw",
+          }}
+          onClick={() => handleOpenTotalSafe()}
+        >
+          <CardMedia component="img" src={pigIcon} sx={{ width: "40px" }} />
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
+          sx={{
+            background: "var(--cor-primaria)",
+            color: "white",
+            fontWeight: "bold",
+            fontFamily: "font1",
+            boxShadow: "0px 5px 4px rgba(0, 0, 0, 0.25)",
+            ":hover": { background: "var(--button-hover)" },
+            borderRadius: "50px",
+          }}
+          onClick={handleOpen}
+        >
+          Adicionar Registro
+        </Button>
+      </Box>
+
       <RegisterModal
         listBillings={listBillings}
         open={open}
@@ -108,11 +216,54 @@ function Dashboard() {
       <div
         className={
           openDashboard === 0
-            ? " dashboard_3"
+            ? " dashboard_3 dashboard_3_none"
             : openDashboard === 1
             ? " dashboard-content dashboard-content-aberto"
             : " dashboard-content dashboard-content-fechado"
         }
+        /* sx={
+          openDashboard === 0
+            ? {
+                borderRadius: "60px 60px 0 0",
+                width: "100vw",
+                display: "none",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gap: "50px",
+                padding: " 55px 105px",
+                position: "absolute",
+                zIndex: "2",
+                overflowY: "hidden",
+                top: "100%",
+              }
+            : openDashboard === 1
+            ? {
+                animation: `${dashboardAbertoAnimation} 1s both`,
+                borderRadius: "60px 60px 0 0",
+                backgroundColor: "var(--cor-secundaria)",
+                display: "flex",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gap: "50px",
+                padding: "55px 105px",
+                position: "absolute",
+                zIndex: "2",
+                overflowY: "hidden",
+              }
+            : {
+                animation: `${dashboardFechadoAnimation} 1s both`,
+                borderRadius: "60px 60px 0 0",
+                backgroundColor: "var(--cor-secundaria)",
+                display: "flex",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gap: "50px",
+                padding: "55px 105px",
+                position: "absolute",
+                zIndex: "2",
+                overflowY: "hidden",
+              }
+        } */
       >
         <CloseIcon
           sx={{
@@ -121,35 +272,98 @@ function Dashboard() {
             right: "50px",
             cursor: "pointer",
             ":hover": { transform: "scale(1.1)" },
+            color: "white",
           }}
           fontSize="large"
           onClick={() => {
-            setShowContent(false);
             setOpenDashboard(2);
           }}
         />
-        <Card listBillings={listBillings} registros={registros} numberMes={0} />
-        <Card listBillings={listBillings} registros={registros} numberMes={1} />
-        <Card listBillings={listBillings} registros={registros} numberMes={2} />
-        <Card listBillings={listBillings} registros={registros} numberMes={3} />
-        <Card listBillings={listBillings} registros={registros} numberMes={4} />
-        <Card listBillings={listBillings} registros={registros} numberMes={5} />
-        <Card listBillings={listBillings} registros={registros} numberMes={6} />
-        <Card listBillings={listBillings} registros={registros} numberMes={7} />
-        <Card listBillings={listBillings} registros={registros} numberMes={8} />
-        <Card listBillings={listBillings} registros={registros} numberMes={9} />
-        <Card
-          listBillings={listBillings}
-          registros={registros}
-          numberMes={10}
-        />
-        <Card
-          listBillings={listBillings}
-          registros={registros}
-          numberMes={11}
-        />
+        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={0}
+          />
+        </Box>
+        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={1}
+          />
+        </Box>
+        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={2}
+          />
+        </Box>
+        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={3}
+          />
+        </Box>
+        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={4}
+          />
+        </Box>
+        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={5}
+          />
+        </Box>
+        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={6}
+          />
+        </Box>
+        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={7}
+          />
+        </Box>
+        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={8}
+          />
+        </Box>
+        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={9}
+          />
+        </Box>
+        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={10}
+          />
+        </Box>
+        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
+          <Card
+            listBillings={listBillings}
+            registros={registros}
+            numberMes={11}
+          />
+        </Box>
       </div>
-
       <Card
         numberMes={mesAtual}
         listBillings={listBillings}
@@ -159,16 +373,21 @@ function Dashboard() {
         fontSize="large"
         sx={{
           position: "fixed",
-          bottom: "20px",
+          bottom: "1vh",
           ":hover": { transform: "scale(1.1)" },
           cursor: "pointer",
         }}
         onClick={() => {
-          setShowContent(true);
           setOpenDashboard(1);
         }}
       />
-    </div>
+      <TotalSafe
+        openTotalSafe={openTotalSafe}
+        setOpenTotalSafe={setOpenTotalSafe}
+        totalSaved={totalSaved}
+        listSaved={listSaved}
+      />
+    </Box>
   );
 }
 

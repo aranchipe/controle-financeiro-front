@@ -2,17 +2,36 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  
 }
+@font-face {
+  font-family: "font1";
+  src: url("./fonts/Classica-Book.ttf");
+}
+
+:root {
+  --cor-primaria: #0a4d68;
+  --cor-secundaria: #088395;
+  --button-color: #088395;
+  --button-hover: #05bfdb;
+  --perfil: #00ffca;
+  --saida: #a70000;
+}
+
+/* ::-webkit-scrollbar {
+  display: none;
+} */
 
 body {
   margin: 0;
-  
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 code {

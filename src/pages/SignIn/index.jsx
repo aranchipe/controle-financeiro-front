@@ -1,5 +1,4 @@
 /* eslint-disable no-unreachable */
-import "./style.css";
 import { getItem, setItem } from "../../utils/storage";
 import { useEffect, useState } from "react";
 import axios from "../../services/axios";
@@ -11,6 +10,9 @@ import {
   OutlinedInput,
   InputAdornment,
   FormHelperText,
+  Link,
+  CardMedia,
+  Paper,
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import Typography from "@mui/material/Typography";
@@ -22,13 +24,16 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LockIcon from "@mui/icons-material/Lock";
+import loginImage from "../../assets/login-image2.png";
+import { notifyError } from "../../utils/toast";
+import logoAzul from "../../assets/logo-azul.png";
 
 const schema = object({
   email: string().required("Campo obrigatório."),
-  password: string().min(6).required("Campo obrigatório."),
+  password: string().required("Campo obrigatório."),
 });
 
-function Signin() {
+export function Signin() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -56,11 +61,15 @@ function Signin() {
     try {
       const response = await axios.post("/signin", data);
       const { token } = response.data;
-
+      if (response.status >= 400) {
+        return notifyError("Email ou senha incorretos");
+      }
       setItem("token", token);
 
       navigate("/dashboard");
-    } catch (error) {}
+    } catch (error) {
+      notifyError(error);
+    }
   };
 
   return (
@@ -68,101 +77,189 @@ function Signin() {
       sx={{
         height: "100vh",
         width: "100vw",
-        background: "blue",
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
       }}
     >
       <Box
         sx={{
-          height: "60%",
-          width: { md: "90%", lg: "30%" },
-          background: "white",
+          width: "65vw",
+          height: "100%",
+          display: { lg: "block", xs: "none" },
+        }}
+        component={Paper}
+      >
+        <CardMedia
+          component="img"
+          image={loginImage}
+          sx={{
+            height: "100%",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "60%",
+          }}
+        />
+      </Box>
+      <Box
+        sx={{
+          width: { lg: "35vw", xs: "100vw" },
           display: "flex",
-          flexDirection: "column",
-          alignItems: "space",
-          py: 3,
-          px: 2,
-          gap: 10,
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Typography variant="h2" sx={{ color: "blue" }}>
-          Faça seu login
-        </Typography>
-
-        <Grid
-          container
-          spacing={2}
-          sx={{ marginTop: 5 }}
-          component="form"
-          onSubmit={onSubmit(handleSubmit)}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            py: 1,
+            px: 2,
+            width: { lg: "25vw", xs: "80vw" },
+          }}
         >
-          <Grid item md={12} lg={12}>
-            <FormControl error={errors?.email ? true : false} fullWidth>
-              <OutlinedInput
-                type="text"
-                {...register("email")}
-                startAdornment={
-                  <InputAdornment
-                    position="start"
-                    sx={{ color: "rgba(150, 165, 171, 0.5)" }}
-                  >
-                    <EmailIcon />
-                  </InputAdornment>
-                }
-                placeholder="Email"
-              />
-              <FormHelperText>
-                {errors?.email?.message?.toString() || " "}
-              </FormHelperText>
-            </FormControl>
-          </Grid>
-          <Grid item md={12} lg={12}>
-            <FormControl error={errors?.password ? true : false} fullWidth>
-              <OutlinedInput
-                type={showPassword ? "text" : "password"}
-                {...register("password")}
-                startAdornment={
-                  <InputAdornment
-                    position="start"
-                    sx={{ color: "rgba(150, 165, 171, 0.5)" }}
-                  >
-                    <LockIcon />
-                  </InputAdornment>
-                }
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      sx={{ color: "rgba(150, 165, 171, 0.5)" }}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                placeholder="Senha"
-              />
-              <FormHelperText>
-                {errors?.password?.message?.toString() || " "}
-              </FormHelperText>
-            </FormControl>
-          </Grid>
+          {/* <Typography
+            variant="h4"
+            sx={{
+              color: "var(--cor-primaria)",
+              marginBottom: "5vh",
+              fontFamily: "font1",
+            }}
+          >
+            Gerencie suas finanças
+          </Typography> */}
+          {/* <CardMedia component="img" src={cofre} sx={{ width: "50px" }} /> */}
+
           <Grid
             container
-            sx={{ display: "flex", justifyContent: "center", marginTop: 10 }}
+            spacing={{ lg: 2, xs: 1 }}
+            sx={{ marginTop: 1 }}
+            component="form"
+            onSubmit={onSubmit(handleSubmit)}
           >
-            <Grid item lg={4} md={12}>
-              <Button variant="contained" fullWidth type="submit">
-                Contained
+            <CardMedia
+              component="img"
+              src={logoAzul}
+              sx={{ display: { xs: "block", lg: "none" } }}
+            />
+            <Grid
+              item
+              lg={12}
+              xs={12}
+              sx={{
+                mt: { xs: "30%", lg: "none" },
+                mb: { xs: "20%", lg: "none" },
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "var(--cor-primaria)",
+                  fontFamily: "font1",
+                  textAlign: { xs: "center", lg: "start" },
+                  fontSize: "50px",
+                }}
+              >
+                Login
+              </Typography>
+            </Grid>
+            <Grid item xs={12} lg={12}>
+              <FormControl error={errors?.email ? true : false} fullWidth>
+                <OutlinedInput
+                  type="text"
+                  {...register("email")}
+                  sx={{ borderRadius: "50px" }}
+                  startAdornment={
+                    <InputAdornment
+                      position="start"
+                      sx={{ color: "rgba(150, 165, 171, 0.5)" }}
+                    >
+                      <EmailIcon />
+                    </InputAdornment>
+                  }
+                  placeholder="Email"
+                />
+                <FormHelperText>
+                  {errors?.email?.message?.toString() || " "}
+                </FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item md={12} lg={12}>
+              <FormControl error={errors?.password ? true : false} fullWidth>
+                <OutlinedInput
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
+                  sx={{ borderRadius: "50px" }}
+                  startAdornment={
+                    <InputAdornment
+                      position="start"
+                      sx={{ color: "rgba(150, 165, 171, 0.5)" }}
+                    >
+                      <LockIcon />
+                    </InputAdornment>
+                  }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        sx={{ color: "rgba(150, 165, 171, 0.5)" }}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  placeholder="Senha"
+                />
+                <FormHelperText>
+                  {errors?.password?.message?.toString() || " "}
+                </FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item lg={12} xs={12}>
+              <Button
+                sx={{
+                  background: "var(--cor-primaria)",
+                  color: "white",
+                  fontFamily: "font1",
+                  fontWeight: "bold",
+                  ":hover": { background: "var(--button-hover)" },
+                  borderRadius: "50px",
+                  height: "6vh",
+                }}
+                variant="contained"
+                fullWidth
+                type="submit"
+              >
+                Entrar
               </Button>
             </Grid>
+
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "5vh",
+                textAlign: { lg: "none", xs: "center" },
+              }}
+            >
+              <Typography>
+                Ainda não possui uma conta? <br />
+                <Link
+                  sx={{
+                    cursor: "pointer",
+                    color: "var(--button-color)",
+                    ":hover": { color: "var(--button-hover)" },
+                  }}
+                  onClick={() => navigate("/signup")}
+                >
+                  {" "}
+                  Cadastre-se
+                </Link>
+              </Typography>
+            </Box>
           </Grid>
-        </Grid>
+        </Box>
       </Box>
     </Box>
   );
 }
-
-export default Signin;

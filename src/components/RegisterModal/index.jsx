@@ -1,7 +1,5 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import TabsComponent from "../TabsComponent";
 
@@ -10,10 +8,11 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: { lg: 400, xs: 350 },
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "1px solid #000",
   boxShadow: 24,
+  borderRadius: "10px",
   p: 4,
 };
 
@@ -24,6 +23,7 @@ export default function BasicModal({
   action,
   registroId,
   registro,
+  setRegistro,
 }) {
   const handleClose = () => setOpen(false);
   return (
@@ -31,8 +31,18 @@ export default function BasicModal({
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "rgba(145, 154, 150, 0.3)",
+          backdropFilter: "blur(4px)",
+          position: "fixed",
+          top: "0",
+          bottom: "0",
+          right: "0",
+          left: "0",
+        }}
       >
         <Box sx={style}>
           <TabsComponent
@@ -41,6 +51,7 @@ export default function BasicModal({
             action={action}
             registroId={registroId}
             registro={registro}
+            setRegistro={setRegistro}
           />
         </Box>
       </Modal>
