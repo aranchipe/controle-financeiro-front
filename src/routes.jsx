@@ -30,7 +30,7 @@ export function MainRoutes() {
 
       <Routes>
         <Route path="/">
-          <Route path="/" element={<Signin />} />
+          <Route path="/" element={<SignIn />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
 
