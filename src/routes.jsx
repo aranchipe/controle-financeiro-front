@@ -1,5 +1,5 @@
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
-import Signin from "./pages/Signin";
+import SignIn from "./pages/SignIn";
 import Signup from "./pages/Signup";
 import Dashboard2 from "./pages/Dashboard2";
 import Dashboard from "./pages/Dashboard";
@@ -31,7 +31,7 @@ function MainRoutes() {
 
       <Routes>
         <Route path="/">
-          <Route path="/" element={<Signin />} />
+          <Route path="/" element={<SignIn />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
 
