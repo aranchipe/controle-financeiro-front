@@ -18,7 +18,7 @@ const schema = object({
   value: string().required("Campo obrigatório."),
 });
 
-export function FreeMonay({
+function FreeMonay({
   openFreeMonay,
   setOpenFreeMonay,
   savedMes,
@@ -27,6 +27,11 @@ export function FreeMonay({
   saida,
   dinheiroAtualMes,
   mes,
+  responseGetGuardado,
+  entradasMes,
+  saidasMes,
+  carregarDadosGuardado,
+  listDinheiroAtual,
 }) {
   const [loading, setLoading] = useState(false);
 
@@ -46,10 +51,6 @@ export function FreeMonay({
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    listSaved();
-  }, [openFreeMonay]);
-
   watch("value");
 
   const useWatchField = (field) => {
@@ -59,6 +60,21 @@ export function FreeMonay({
   };
 
   useWatchField("value");
+  const listSaved = () => {
+    if (responseGetGuardado) {
+      const saved = responseGetGuardado.filter((item) => {
+        return item.month === mes;
+      });
+      if (saved.length === 0) {
+        setValue("value", 0);
+        setSavedMesValue(0);
+      } else {
+        setValue("value", saved[0].value);
+        setSavedMesValue(saved[0].value);
+        setSavedMesId(saved[0].id);
+      }
+    }
+  };
 
   const handleSubmitNewCompany = async (dados) => {
     setLoading(true); //Ativar o carregamento
@@ -114,28 +130,14 @@ export function FreeMonay({
     }
     setLoading(false); //Desativa o carregamento após a requisição
     setOpenFreeMonay(false);
+    carregarDadosGuardado();
   };
 
-  const listSaved = async () => {
-    try {
-      const response = await axios.get("/guardados", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const saved = response.data.filter((item) => {
-        return item.month === mes;
-      });
-      if (saved.length === 0) {
-        setValue(0);
-        setSavedMesValue(0);
-      } else {
-        setValue("value", saved[0].value);
-        setSavedMesValue(saved[0].value);
-        setSavedMesId(saved[0].id);
-      }
-    } catch (error) {}
-  };
+  useEffect(() => {
+    listSaved();
+    entradasMes();
+    saidasMes();
+  }, [openFreeMonay]);
   return (
     <div>
       <Modal
@@ -180,7 +182,7 @@ export function FreeMonay({
             {typeModal === "livre" ? (
               ""
             ) : (
-              <img src={mao} alt="mao" style={{ width: "100%" }} />
+              <CardMedia component="img" src={mao} sx={{ width: "100%" }} />
             )}
           </Box>
           <Grid
@@ -320,3 +322,5 @@ export function FreeMonay({
     </div>
   );
 }
+
+export default FreeMonay;

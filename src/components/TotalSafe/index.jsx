@@ -4,18 +4,13 @@ import { Box, TextField, CardMedia } from "@mui/material";
 import { useEffect } from "react";
 import cofreAberto from "../../assets/cofre_aberto.svg";
 
-export function TotalSafe({
-  openTotalSafe,
-  setOpenTotalSafe,
-  totalSaved,
-  listSaved,
-}) {
+function TotalSafe({ openTotalSafe, setOpenTotalSafe, totalSaved }) {
   const handleClose = () => setOpenTotalSafe(false);
-  useEffect(() => {
+  /* useEffect(() => {
     listSaved();
-  });
+  }, []); */
   return (
-    <div>
+    <Box>
       <Modal
         open={openTotalSafe}
         onClose={handleClose}
@@ -72,6 +67,8 @@ export function TotalSafe({
           />
         </Box>
       </Modal>
-    </div>
+    </Box>
   );
 }
+
+export default TotalSafe;

@@ -29,14 +29,9 @@ const schema = object({
   value: string().required("Campo obrigatório."),
 });
 
-export function RegisterForm({
-  type,
-  handleClose,
-  listBillings,
-  action,
-  registro,
-}) {
+function RegisterForm({ type, handleClose, listBillings, action, registro }) {
   const token = getItem("token");
+
   const {
     register,
     watch,
@@ -56,7 +51,8 @@ export function RegisterForm({
   useWatchField("value");
 
   const handleSubmit = async (date) => {
-    const dataCorreta = format(date.data, "dd-MM-yyyy");
+    const dataCorreta = format(date.data, "MM-dd-yyyy");
+    console.log(date.data, dataCorreta)
     if (action === "register") {
       try {
         const response = await axios.post(
@@ -206,9 +202,6 @@ export function RegisterForm({
               variant="contained"
               fullWidth
               type="submit"
-              onClick={() => {
-                console.log(parseFloat(getValues().value.replace(",", "")));
-              }}
               sx={{
                 background: "var(--button-color)",
                 ":hover": { background: "var(--button-hover)" },
@@ -224,3 +217,5 @@ export function RegisterForm({
     </Box>
   );
 }
+
+export default RegisterForm;

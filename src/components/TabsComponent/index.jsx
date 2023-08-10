@@ -4,9 +4,9 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import { RegisterForm } from "../RegisterForm";
+import RegisterForm from "../RegisterForm";
 
-export function TabsComponent({
+function TabsComponent({
   handleClose,
   listBillings,
   action,
@@ -31,27 +31,25 @@ export function TabsComponent({
         </Box>
         <TabPanel value="1">
           <RegisterForm
-            listBillings={listBillings}
             type="entrada"
             handleClose={handleClose}
             action={action}
-            registroId={registroId}
             registro={registro}
-            setRegistro={setRegistro}
+            listBillings={listBillings}
           />
         </TabPanel>
         <TabPanel value="2">
           <RegisterForm
-            listBillings={listBillings}
             type="saida"
             handleClose={handleClose}
             action={action}
-            registroId={registroId}
             registro={registro}
-            setRegistro={setRegistro}
+            listBillings={listBillings}
           />
         </TabPanel>
       </TabContext>
     </Box>
   );
 }
+
+export default TabsComponent;

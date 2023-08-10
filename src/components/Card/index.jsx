@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "../../services/axios";
-import { getItem, clear } from "../../utils/storage";
+import { getItem } from "../../utils/storage";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import { Typography, Grid, CardMedia } from "@mui/material";
@@ -15,14 +15,12 @@ import { format } from "date-fns";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
-import { SaveModal } from "../SaveModal";
 import porquinho from "../../assets/guardar.png";
 import carteira from "../../assets/carteira.png";
-import { FreeMonay } from "../FreeMonay";
-import { DeleteModal } from "../DeleteModal";
-import { RegisterModal } from "../RegisterModal";
-import { useNavigate } from "react-router-dom";
-import { DinheiroAtualModal } from "../DinheiroAtualModal";
+import FreeMonay from "../FreeMonay";
+import DeleteModal from "../DeleteModal";
+import RegisterModal from "../RegisterModal";
+import DinheiroAtualModal from "../DinheiroAtualModal";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -43,11 +41,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export function Card({ numberMes, registros, listBillings }) {
+function Card({
+  numberMes,
+  registros,
+  listBillings,
+  responseGetGuardado,
+  carregarDadosGuardado,
+  responseGetDinheiroAtual,
+  listDinheiroAtual
+}) {
   const [saida, setSaida] = useState(0);
   const [entrada, setEntrada] = useState(0);
   const token = getItem("token");
-  const [open, setOpen] = useState(false);
   const [openFreeMonay, setOpenFreeMonay] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
@@ -58,13 +63,33 @@ export function Card({ numberMes, registros, listBillings }) {
   const [registroId, setRegistroId] = useState();
   const [registro, setRegistro] = useState();
   const [typeModal, setTypeModal] = useState();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    saidasMes();
-    entradasMes();
-    listDinheiroAtual();
-  });
+  let mes = "";
+  if (numberMes === 0) {
+    mes = "janeiro";
+  } else if (numberMes === 1) {
+    mes = "fevereiro";
+  } else if (numberMes === 2) {
+    mes = "março";
+  } else if (numberMes === 3) {
+    mes = "abril";
+  } else if (numberMes === 4) {
+    mes = "maio";
+  } else if (numberMes === 5) {
+    mes = "junho";
+  } else if (numberMes === 6) {
+    mes = "julho";
+  } else if (numberMes === 7) {
+    mes = "agosto";
+  } else if (numberMes === 8) {
+    mes = "setembro";
+  } else if (numberMes === 9) {
+    mes = "outubro";
+  } else if (numberMes === 10) {
+    mes = "novembro";
+  } else if (numberMes === 11) {
+    mes = "dezembro";
+  }
 
   function compararRegistros(registroA, registroB) {
     if (registroA.type === "entrada" && registroB.type === "saida") {
@@ -103,41 +128,9 @@ export function Card({ numberMes, registros, listBillings }) {
     setEntrada(somaEntradas);
   };
 
-  let mes = "";
-  if (numberMes === 0) {
-    mes = "janeiro";
-  } else if (numberMes === 1) {
-    mes = "fevereiro";
-  } else if (numberMes === 2) {
-    mes = "março";
-  } else if (numberMes === 3) {
-    mes = "abril";
-  } else if (numberMes === 4) {
-    mes = "maio";
-  } else if (numberMes === 5) {
-    mes = "junho";
-  } else if (numberMes === 6) {
-    mes = "julho";
-  } else if (numberMes === 7) {
-    mes = "agosto";
-  } else if (numberMes === 8) {
-    mes = "setembro";
-  } else if (numberMes === 9) {
-    mes = "outubro";
-  } else if (numberMes === 10) {
-    mes = "novembro";
-  } else if (numberMes === 11) {
-    mes = "dezembro";
-  }
-
-  const listSaved = async () => {
-    try {
-      const response = await axios.get("/guardados", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const saved = response.data.filter((item) => {
+  const listSaved = () => {
+    if (responseGetGuardado) {
+      const saved = responseGetGuardado.filter((item) => {
         return item.month === mes;
       });
       if (saved.length === 0) {
@@ -145,19 +138,19 @@ export function Card({ numberMes, registros, listBillings }) {
       } else {
         setSavedMes(saved[0].value);
       }
-    } catch (error) {
-      clear();
-      navigate("/");
     }
   };
 
-  const listDinheiroAtual = async () => {
+  /* const listDinheiroAtual = async () => {
     try {
       const response = await axios.get("/dinheiroAtual", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      if (response) {
+        setResponseGetDinheiroAtual(response);
+      }
       const dinheiroAtual = response.data.filter((item) => {
         return item.month === mes;
       });
@@ -167,10 +160,16 @@ export function Card({ numberMes, registros, listBillings }) {
         setDinheiroAtualMes(dinheiroAtual[0].value);
       }
     } catch (error) {
-      clear();
-      navigate("/");
+      console.log(error.response, "1");
     }
+  }; */
+  const carregarDadosDinheiroAtual = () => {
+    listDinheiroAtual();
   };
+
+  useEffect(() => {
+    listSaved();
+  }, []);
 
   return (
     <Grid
@@ -366,6 +365,7 @@ export function Card({ numberMes, registros, listBillings }) {
               handleOpenFreeMonay();
               setTypeModal("guardado");
               listSaved();
+              console.log(savedMes, typeModal);
             }}
           >
             <CardMedia component="img" src={porquinho} sx={{ width: "50px" }} />
@@ -411,17 +411,16 @@ export function Card({ numberMes, registros, listBillings }) {
             }}
             fullWidth
           >
-            <img src={carteira} alt="carteira" style={{ width: "50px" }} />
+            <CardMedia component="img" src={carteira} sx={{ width: "50px" }} />
           </Button>
         </Box>
       </Box>
-      <SaveModal open={open} setOpen={setOpen} mes={mes} />
       <DinheiroAtualModal
         open={openDinheiroAtualModal}
         setOpen={setOpenDinheiroAtualModal}
         mes={mes}
-        dinheiroAtualMes={dinheiroAtualMes}
-        listDinheiroAtual={listDinheiroAtual}
+        carregarDadosDinheiroAtual={carregarDadosDinheiroAtual}
+        responseGetDinheiroAtual={responseGetDinheiroAtual}
       />
       <FreeMonay
         openFreeMonay={openFreeMonay}
@@ -432,6 +431,11 @@ export function Card({ numberMes, registros, listBillings }) {
         saida={saida}
         dinheiroAtualMes={dinheiroAtualMes}
         mes={mes}
+        responseGetGuardado={responseGetGuardado}
+        entradasMes={entradasMes}
+        saidasMes={saidasMes}
+        carregarDadosGuardado={carregarDadosGuardado}
+        listDinheiroAtual={listDinheiroAtual}
       />
       <DeleteModal
         openDeleteModal={openDeleteModal}
@@ -444,10 +448,12 @@ export function Card({ numberMes, registros, listBillings }) {
         setOpen={setOpenRegisterModal}
         action="edit"
         registroId={registroId}
-        listBillings={listBillings}
         registro={registro}
         setRegistro={setRegistro}
+        listBillings={listBillings}
       />
     </Grid>
   );
 }
+
+export default Card;

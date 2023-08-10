@@ -1,11 +1,12 @@
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
-import { SignIn } from "./pages/SignIn";
-import { Signup } from "./pages/Signup";
-import { Dashboard } from "./pages/Dashboard";
+import Signin from "./pages/Signin";
+import Signup from "./pages/Signup";
+import Dashboard2 from "./pages/Dashboard2";
+import Dashboard from "./pages/Dashboard";
 import { getItem } from "./utils/storage";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useLoading } from "./hooks/useLoading";
+import useLoading from "./hooks/useLoading";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,7 +16,7 @@ function ProtectedRoutes({ redirectTo }) {
   return token ? <Outlet /> : <Navigate to={redirectTo} />;
 }
 
-export function MainRoutes() {
+function MainRoutes() {
   const { openLoading } = useLoading();
 
   return (
@@ -30,7 +31,7 @@ export function MainRoutes() {
 
       <Routes>
         <Route path="/">
-          <Route path="/" element={<SignIn />} />
+          <Route path="/" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
 
@@ -41,3 +42,5 @@ export function MainRoutes() {
     </>
   );
 }
+
+export default MainRoutes;

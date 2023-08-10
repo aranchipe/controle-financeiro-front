@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import { TabsComponent } from "../TabsComponent";
+import TabsComponent from "../TabsComponent";
 
 const style = {
   position: "absolute",
@@ -16,7 +16,7 @@ const style = {
   p: 4,
 };
 
-export function RegisterModal({
+function RegisterModal({
   open,
   setOpen,
   listBillings,
@@ -27,7 +27,7 @@ export function RegisterModal({
 }) {
   const handleClose = () => setOpen(false);
   return (
-    <div>
+    <Box>
       <Modal
         open={open}
         onClose={handleClose}
@@ -46,15 +46,17 @@ export function RegisterModal({
       >
         <Box sx={style}>
           <TabsComponent
-            listBillings={listBillings}
             handleClose={handleClose}
             action={action}
             registroId={registroId}
             registro={registro}
             setRegistro={setRegistro}
+            listBillings={listBillings}
           />
         </Box>
       </Modal>
-    </div>
+    </Box>
   );
 }
+
+export default RegisterModal;

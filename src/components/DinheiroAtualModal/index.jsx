@@ -27,7 +27,13 @@ const schema = object({
   value: string().required("Campo obrigatório."),
 });
 
-export function DinheiroAtualModal({ open, setOpen, mes }) {
+function DinheiroAtualModal({
+  open,
+  setOpen,
+  mes,
+  responseGetDinheiroAtual,
+  carregarDadosDinheiroAtual,
+}) {
   const [loading, setLoading] = useState(false);
   const token = getItem("token");
   const [dinheiroAtualMesValue, setDinheiroAtualMesValue] = useState();
@@ -44,10 +50,6 @@ export function DinheiroAtualModal({ open, setOpen, mes }) {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  useEffect(() => {
-    listDinheiroAtual();
-  }, [open]);
 
   watch("value");
 
@@ -113,31 +115,30 @@ export function DinheiroAtualModal({ open, setOpen, mes }) {
     }
     setLoading(false);
     setOpen(false);
+    carregarDadosDinheiroAtual();
   };
 
-  const listDinheiroAtual = async () => {
-    try {
-      const response = await axios.get("/dinheiroAtual", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const dinheiroAtual = response.data.filter((item) => {
+  const listDinheiroAtual = () => {
+    if (responseGetDinheiroAtual) {
+      const dinheiroAtual = responseGetDinheiroAtual.data.filter((item) => {
         return item.month === mes;
       });
       if (dinheiroAtual.length === 0) {
-        setValue("");
+        setValue("value", "");
         setDinheiroAtualMesValue("");
       } else {
         setValue("value", dinheiroAtual[0].value);
         setDinheiroAtualMesValue(dinheiroAtual[0].value);
         setDinheiroAtualMesId(dinheiroAtual[0].id);
       }
-    } catch (error) {}
+    }
   };
+  useEffect(() => {
+    listDinheiroAtual();
+  }, [open]);
 
   return (
-    <div>
+    <Box>
       <Modal
         open={open}
         onClose={handleClose}
@@ -220,6 +221,8 @@ export function DinheiroAtualModal({ open, setOpen, mes }) {
           </Grid>
         </Box>
       </Modal>
-    </div>
+    </Box>
   );
 }
+
+export default DinheiroAtualModal;

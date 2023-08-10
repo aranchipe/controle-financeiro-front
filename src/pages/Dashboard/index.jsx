@@ -1,21 +1,21 @@
 import "./style.css";
-import { Card } from "../../components/Card";
+import Card from "../../components/Card";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
-import { RegisterModal } from "../../components/RegisterModal";
+import RegisterModal from "../../components/RegisterModal";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { CardMedia, Typography } from "@mui/material";
-import { clear } from "../../utils/storage";
-import { useNavigate } from "react-router-dom";
 import axios from "../../services/axios";
 import { getItem } from "../../utils/storage";
 import { Box } from "@mui/system";
-import { TotalSafe } from "../../components/TotalSafe";
-import { Header } from "../../components/Header";
+import TotalSafe from "../../components/TotalSafe";
+import Header from "../../components/Header";
 import pigIcon from "../../assets/pig-icon.png";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
-export function Dashboard() {
+function Dashboard() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const [openDashboard, setOpenDashboard] = useState(0);
@@ -24,19 +24,45 @@ export function Dashboard() {
   const [registros, setRegistros] = useState([]);
   const [totalSaved, setTotalSaved] = useState(0);
   const [openTotalSafe, setOpenTotalSafe] = useState(false);
-
+  const [responseGetGuardado, setResponseGetGuardado] = useState();
+  const [responseGetDinheiroAtual, setResponseGetDinheiroAtual] = useState();
+  const numberMes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   const handleOpenTotalSafe = () => setOpenTotalSafe(true);
+  const [isBillingsLoading, setIsBillingsLoading] = useState(false);
+  const [dinheiroAtualMes, setDinheiroAtualMes] = useState(0);
+
+
 
   const mesAtual = new Date().getMonth();
-  const navigate = useNavigate();
 
   const token = getItem("token");
 
-  useEffect(() => {
-    userDetail();
-    listBillings();
-    listSaved();
-  }, []);
+  let mes = "";
+  if (numberMes === 0) {
+    mes = "janeiro";
+  } else if (numberMes === 1) {
+    mes = "fevereiro";
+  } else if (numberMes === 2) {
+    mes = "março";
+  } else if (numberMes === 3) {
+    mes = "abril";
+  } else if (numberMes === 4) {
+    mes = "maio";
+  } else if (numberMes === 5) {
+    mes = "junho";
+  } else if (numberMes === 6) {
+    mes = "julho";
+  } else if (numberMes === 7) {
+    mes = "agosto";
+  } else if (numberMes === 8) {
+    mes = "setembro";
+  } else if (numberMes === 9) {
+    mes = "outubro";
+  } else if (numberMes === 10) {
+    mes = "novembro";
+  } else if (numberMes === 11) {
+    mes = "dezembro";
+  }
 
   const userDetail = async () => {
     try {
@@ -52,12 +78,17 @@ export function Dashboard() {
   };
 
   const listBillings = async () => {
-    const response = await axios.get("/registros", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    setRegistros(response.data);
+    try {
+      const response = await axios.get("/registros", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setRegistros(response.data);
+    } catch (error) {
+      console.log("erro");
+    } finally {
+    }
   };
 
   const listSaved = async () => {
@@ -67,16 +98,49 @@ export function Dashboard() {
           Authorization: `Bearer ${token}`,
         },
       });
+      setResponseGetGuardado(response.data);
       let totalSaved = 0;
       for (let i = 0; i < response.data.length; i++) {
         totalSaved = totalSaved + Number(response.data[i].value);
       }
       setTotalSaved(totalSaved);
     } catch (error) {
-      clear();
-      navigate("/");
+      console.log(error.response, "3");
     }
   };
+  const carregarDadosGuardado = () => {
+    listSaved();
+  };
+
+  const listDinheiroAtual = async () => {
+    try {
+      const response = await axios.get("/dinheiroAtual", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response) {
+        setResponseGetDinheiroAtual(response);
+      }
+      const dinheiroAtual = response.data.filter((item) => {
+        return item.month === mes;
+      });
+      if (dinheiroAtual.length === 0) {
+        setDinheiroAtualMes(0);
+      } else {
+        setDinheiroAtualMes(dinheiroAtual[0].value);
+      }
+    } catch (error) {
+      console.log(error.response, "1");
+    }
+  };
+
+  useEffect(() => {
+    userDetail();
+    listBillings();
+    listSaved();
+    listDinheiroAtual()
+  }, []);
   return (
     <Box
       sx={
@@ -181,7 +245,7 @@ export function Dashboard() {
         setOpen={setOpen}
         action="register"
       />
-      <div
+      <div 
         className={
           openDashboard === 0
             ? " dashboard_3 dashboard_3_none"
@@ -204,95 +268,29 @@ export function Dashboard() {
             setOpenDashboard(2);
           }}
         />
-        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={0}
-          />
-        </Box>
-        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={1}
-          />
-        </Box>
-        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={2}
-          />
-        </Box>
-        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={3}
-          />
-        </Box>
-        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={4}
-          />
-        </Box>
-        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={5}
-          />
-        </Box>
-        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={6}
-          />
-        </Box>
-        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={7}
-          />
-        </Box>
-        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={8}
-          />
-        </Box>
-        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={9}
-          />
-        </Box>
-        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={10}
-          />
-        </Box>
-        <Box sx={{ width: { xs: "80%", lg: "30%" } }}>
-          <Card
-            listBillings={listBillings}
-            registros={registros}
-            numberMes={11}
-          />
-        </Box>
+
+        {numberMes.map((item, index) => (
+          <Box key={index} sx={{ width: { xs: "80%", lg: "30%" } }}>
+            <Card
+              listBillings={listBillings}
+              registros={registros}
+              numberMes={item}
+              responseGetGuardado={responseGetGuardado}
+              carregarDadosGuardado={carregarDadosGuardado}
+              responseGetDinheiroAtual={responseGetDinheiroAtual}
+              listDinheiroAtual={listDinheiroAtual}
+            />
+          </Box>
+        ))}
       </div>
       <Card
         numberMes={mesAtual}
         listBillings={listBillings}
+        responseGetGuardado={responseGetGuardado}
         registros={registros}
+        carregarDadosGuardado={carregarDadosGuardado}
+        responseGetDinheiroAtual={responseGetDinheiroAtual}
+        listDinheiroAtual={listDinheiroAtual}
       />
       <ArrowUpwardIcon
         fontSize="large"
@@ -310,8 +308,10 @@ export function Dashboard() {
         openTotalSafe={openTotalSafe}
         setOpenTotalSafe={setOpenTotalSafe}
         totalSaved={totalSaved}
-        listSaved={listSaved}
+        responseGetGuardado={responseGetGuardado}
       />
     </Box>
   );
 }
+
+export default Dashboard;

@@ -20,7 +20,7 @@ const style = {
   display: "flex",
 };
 
-export function DeleteModal({
+function DeleteModal({
   openDeleteModal,
   setOpenDeleteModal,
   registroId,
@@ -43,7 +43,7 @@ export function DeleteModal({
   };
 
   return (
-    <div>
+    <Box>
       <Modal
         open={openDeleteModal}
         onClose={handleClose}
@@ -96,6 +96,8 @@ export function DeleteModal({
           </Grid>
         </Box>
       </Modal>
-    </div>
+    </Box>
   );
 }
+
+export default DeleteModal;

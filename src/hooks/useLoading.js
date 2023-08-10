@@ -2,7 +2,7 @@ import api from "../services/axios";
 import { useEffect, useState } from "react";
 import { notifyError } from "../utils/toast";
 
-export function useLoading() {
+function useLoading() {
   const [openLoading, setOpenLoading] = useState(false);
 
   useEffect(() => {
@@ -41,3 +41,5 @@ export function useLoading() {
     setOpenLoading,
   };
 }
+
+export default useLoading;

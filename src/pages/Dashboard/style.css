@@ -1,25 +1,3 @@
-.dashboard_1 {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: sticky;
-  padding: 0 20vw;
-}
-
-.dashboard_2 {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  padding: 0 20vw;
-  position: sticky;
-  overflow-y: hidden;
-}
-
 .dashboard_3 {
   border-radius: 60px 60px 0 0;
   width: 100vw;
@@ -41,13 +19,14 @@
 .dashboard-content {
   border-radius: 60px 60px 0 0;
   background-color: var(--cor-secundaria);
+  
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 50px;
   padding: 55px 105px;
   position: absolute;
-  z-index: 2;
+  z-index: 3;
   overflow-y: hidden;
 }
 
@@ -72,7 +51,6 @@
   0% {
     top: 25vh;
     opacity: 1;
-    display: block;
   }
   100% {
     top: 100%;
