@@ -93,16 +93,8 @@ function Dashboard() {
       if (response.data) {
         setResponseGetDinheiroAtual(response.data);
       }
-      /* const dinheiroAtual = response.data.filter((item) => {
-        return item.month === mes;
-      });
-      if (dinheiroAtual.length === 0) {
-        setDinheiroAtualMes(0);
-      } else {
-        setDinheiroAtualMes(dinheiroAtual[0].value);
-      } */
+      
     } catch (error) {
-      console.log(error.response, "1");
     }
   };
 
