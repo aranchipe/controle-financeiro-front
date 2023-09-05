@@ -6,7 +6,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import axios from "../../services/axios";
 import { getItem } from "../../utils/storage";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/system";
@@ -52,14 +51,12 @@ function Card({
 }) {
   const [saida, setSaida] = useState(0);
   const [entrada, setEntrada] = useState(0);
-  const token = getItem("token");
   const [openFreeMonay, setOpenFreeMonay] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
   const [openDinheiroAtualModal, setOpenDinheiroAtualModal] = useState(false);
   const handleOpenFreeMonay = () => setOpenFreeMonay(true);
   const [savedMes, setSavedMes] = useState(0);
-  const [dinheiroAtualMes, setDinheiroAtualMes] = useState(0);
   const [registroId, setRegistroId] = useState();
   const [registro, setRegistro] = useState();
   const [typeModal, setTypeModal] = useState();
@@ -141,31 +138,9 @@ function Card({
     }
   };
 
-  /* const listDinheiroAtual = async () => {
-    try {
-      const response = await axios.get("/dinheiroAtual", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response) {
-        setResponseGetDinheiroAtual(response);
-      }
-      const dinheiroAtual = response.data.filter((item) => {
-        return item.month === mes;
-      });
-      if (dinheiroAtual.length === 0) {
-        setDinheiroAtualMes(0);
-      } else {
-        setDinheiroAtualMes(dinheiroAtual[0].value);
-      }
-    } catch (error) {
-      console.log(error.response, "1");
-    }
-  }; */
-  const carregarDadosDinheiroAtual = () => {
-    listDinheiroAtual();
-  };
+
+
+  
 
   useEffect(() => {
     listSaved();
@@ -365,7 +340,6 @@ function Card({
               handleOpenFreeMonay();
               setTypeModal("guardado");
               listSaved();
-              console.log(savedMes, typeModal);
             }}
           >
             <CardMedia component="img" src={porquinho} sx={{ width: "50px" }} />
@@ -419,7 +393,6 @@ function Card({
         open={openDinheiroAtualModal}
         setOpen={setOpenDinheiroAtualModal}
         mes={mes}
-        carregarDadosDinheiroAtual={carregarDadosDinheiroAtual}
         responseGetDinheiroAtual={responseGetDinheiroAtual}
       />
       <FreeMonay
@@ -429,9 +402,9 @@ function Card({
         typeModal={typeModal}
         entrada={entrada}
         saida={saida}
-        dinheiroAtualMes={dinheiroAtualMes}
         mes={mes}
         responseGetGuardado={responseGetGuardado}
+        responseGetDinheiroAtual={responseGetDinheiroAtual}
         entradasMes={entradasMes}
         saidasMes={saidasMes}
         carregarDadosGuardado={carregarDadosGuardado}

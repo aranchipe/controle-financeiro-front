@@ -25,19 +25,19 @@ function FreeMonay({
   typeModal,
   entrada,
   saida,
-  dinheiroAtualMes,
   mes,
   responseGetGuardado,
   entradasMes,
   saidasMes,
   carregarDadosGuardado,
-  listDinheiroAtual,
+  responseGetDinheiroAtual
 }) {
   const [loading, setLoading] = useState(false);
-
   const token = getItem("token");
   const [savedMesValue, setSavedMesValue] = useState();
   const [savedMesId, setSavedMesId] = useState();
+  const [dinheiroAtualMesValue, setDinheiroAtualMesValue] = useState();
+
   const handleClose = () => setOpenFreeMonay(false);
 
   const {
@@ -60,6 +60,7 @@ function FreeMonay({
   };
 
   useWatchField("value");
+  
   const listSaved = () => {
     if (responseGetGuardado) {
       const saved = responseGetGuardado.filter((item) => {
@@ -72,6 +73,19 @@ function FreeMonay({
         setValue("value", saved[0].value);
         setSavedMesValue(saved[0].value);
         setSavedMesId(saved[0].id);
+      }
+    }
+  };
+
+  const listDinheiroAtual = () => {
+    if (responseGetDinheiroAtual) {
+      const dinheiroAtual = responseGetDinheiroAtual.filter((item) => {
+        return item.month === mes;
+      });
+      if (dinheiroAtual.length === 0) {
+        setDinheiroAtualMesValue("");
+      } else {
+        setDinheiroAtualMesValue(dinheiroAtual[0].value);
       }
     }
   };
@@ -137,6 +151,7 @@ function FreeMonay({
     listSaved();
     entradasMes();
     saidasMes();
+    listDinheiroAtual()
   }, [openFreeMonay]);
   return (
     <div>
@@ -250,13 +265,13 @@ function FreeMonay({
                 value={
                   typeModal === "livre"
                     ? Number.isInteger(
-                        (dinheiroAtualMes - savedMes + entrada - saida) / 100
+                        (dinheiroAtualMesValue - savedMes + entrada - saida) / 100
                       )
                       ? `R$ ${
-                          (dinheiroAtualMes - savedMes + entrada - saida) / 100
+                          (dinheiroAtualMesValue - savedMes + entrada - saida) / 100
                         }.00`
                       : `R$ ${
-                          (dinheiroAtualMes - savedMes + entrada - saida) / 100
+                          (dinheiroAtualMesValue - savedMes + entrada - saida) / 100
                         }`
                     : getValues().value
                 }

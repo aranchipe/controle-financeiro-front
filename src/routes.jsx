@@ -1,7 +1,6 @@
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import SignIn from "./pages/SignIn";
 import Signup from "./pages/Signup";
-import Dashboard2 from "./pages/Dashboard2";
 import Dashboard from "./pages/Dashboard";
 import { getItem } from "./utils/storage";
 import Backdrop from "@mui/material/Backdrop";

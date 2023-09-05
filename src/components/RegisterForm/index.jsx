@@ -52,7 +52,6 @@ function RegisterForm({ type, handleClose, listBillings, action, registro }) {
 
   const handleSubmit = async (date) => {
     const dataCorreta = format(date.data, "MM-dd-yyyy");
-    console.log(date.data, dataCorreta)
     if (action === "register") {
       try {
         const response = await axios.post(

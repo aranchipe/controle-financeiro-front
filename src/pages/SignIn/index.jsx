@@ -33,7 +33,7 @@ const schema = object({
   password: string().required("Campo obrigatório."),
 });
 
-function Signin() {
+function SignIn() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -251,4 +251,4 @@ function Signin() {
   );
 }
 
-export default Signin;
+export default SignIn;

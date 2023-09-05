@@ -32,7 +32,6 @@ function DinheiroAtualModal({
   setOpen,
   mes,
   responseGetDinheiroAtual,
-  carregarDadosDinheiroAtual,
 }) {
   const [loading, setLoading] = useState(false);
   const token = getItem("token");
@@ -115,12 +114,11 @@ function DinheiroAtualModal({
     }
     setLoading(false);
     setOpen(false);
-    carregarDadosDinheiroAtual();
   };
 
   const listDinheiroAtual = () => {
     if (responseGetDinheiroAtual) {
-      const dinheiroAtual = responseGetDinheiroAtual.data.filter((item) => {
+      const dinheiroAtual = responseGetDinheiroAtual.filter((item) => {
         return item.month === mes;
       });
       if (dinheiroAtual.length === 0) {

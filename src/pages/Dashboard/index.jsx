@@ -12,8 +12,6 @@ import { Box } from "@mui/system";
 import TotalSafe from "../../components/TotalSafe";
 import Header from "../../components/Header";
 import pigIcon from "../../assets/pig-icon.png";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
 
 function Dashboard() {
   const [open, setOpen] = useState(false);
@@ -28,8 +26,6 @@ function Dashboard() {
   const [responseGetDinheiroAtual, setResponseGetDinheiroAtual] = useState();
   const numberMes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   const handleOpenTotalSafe = () => setOpenTotalSafe(true);
-  const [isBillingsLoading, setIsBillingsLoading] = useState(false);
-  const [dinheiroAtualMes, setDinheiroAtualMes] = useState(0);
 
 
 
@@ -37,32 +33,7 @@ function Dashboard() {
 
   const token = getItem("token");
 
-  let mes = "";
-  if (numberMes === 0) {
-    mes = "janeiro";
-  } else if (numberMes === 1) {
-    mes = "fevereiro";
-  } else if (numberMes === 2) {
-    mes = "março";
-  } else if (numberMes === 3) {
-    mes = "abril";
-  } else if (numberMes === 4) {
-    mes = "maio";
-  } else if (numberMes === 5) {
-    mes = "junho";
-  } else if (numberMes === 6) {
-    mes = "julho";
-  } else if (numberMes === 7) {
-    mes = "agosto";
-  } else if (numberMes === 8) {
-    mes = "setembro";
-  } else if (numberMes === 9) {
-    mes = "outubro";
-  } else if (numberMes === 10) {
-    mes = "novembro";
-  } else if (numberMes === 11) {
-    mes = "dezembro";
-  }
+ 
 
   const userDetail = async () => {
     try {
@@ -86,7 +57,6 @@ function Dashboard() {
       });
       setRegistros(response.data);
     } catch (error) {
-      console.log("erro");
     } finally {
     }
   };
@@ -105,7 +75,6 @@ function Dashboard() {
       }
       setTotalSaved(totalSaved);
     } catch (error) {
-      console.log(error.response, "3");
     }
   };
   const carregarDadosGuardado = () => {
@@ -119,19 +88,11 @@ function Dashboard() {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (response) {
-        setResponseGetDinheiroAtual(response);
+      if (response.data) {
+        setResponseGetDinheiroAtual(response.data);
       }
-      const dinheiroAtual = response.data.filter((item) => {
-        return item.month === mes;
-      });
-      if (dinheiroAtual.length === 0) {
-        setDinheiroAtualMes(0);
-      } else {
-        setDinheiroAtualMes(dinheiroAtual[0].value);
-      }
+      
     } catch (error) {
-      console.log(error.response, "1");
     }
   };
 
