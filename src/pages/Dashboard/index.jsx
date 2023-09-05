@@ -57,6 +57,7 @@ function Dashboard() {
       });
       setRegistros(response.data);
     } catch (error) {
+      console.log("erro");
     } finally {
     }
   };
@@ -75,6 +76,7 @@ function Dashboard() {
       }
       setTotalSaved(totalSaved);
     } catch (error) {
+      console.log(error.response, "3");
     }
   };
   const carregarDadosGuardado = () => {
@@ -91,8 +93,16 @@ function Dashboard() {
       if (response.data) {
         setResponseGetDinheiroAtual(response.data);
       }
-      
+      /* const dinheiroAtual = response.data.filter((item) => {
+        return item.month === mes;
+      });
+      if (dinheiroAtual.length === 0) {
+        setDinheiroAtualMes(0);
+      } else {
+        setDinheiroAtualMes(dinheiroAtual[0].value);
+      } */
     } catch (error) {
+      console.log(error.response, "1");
     }
   };
 

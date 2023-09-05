@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import axios from "../../services/axios";
 import { getItem } from "../../utils/storage";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/system";
@@ -57,6 +58,7 @@ function Card({
   const [openDinheiroAtualModal, setOpenDinheiroAtualModal] = useState(false);
   const handleOpenFreeMonay = () => setOpenFreeMonay(true);
   const [savedMes, setSavedMes] = useState(0);
+  const [dinheiroAtualMes, setDinheiroAtualMes] = useState(0);
   const [registroId, setRegistroId] = useState();
   const [registro, setRegistro] = useState();
   const [typeModal, setTypeModal] = useState();
@@ -138,12 +140,35 @@ function Card({
     }
   };
 
+  /* const listSaved = () => {
+    if (responseGetGuardado) {
+      const saved = responseGetGuardado.filter((item) => {
+        return item.month === mes;
+      });
+      if (saved.length === 0) {
+        setSavedMes(0);
+      } else {
+        setSavedMes(saved[0].value);
+      }
+    }
+  }; */
 
-
-  
+  const carregarDadosDinheiroAtual = () => {
+    if (responseGetDinheiroAtual) {
+      const guardado = responseGetDinheiroAtual.filter((item) => {
+        return item.month === mes;
+      });
+      if (guardado.length === 0) {
+        setDinheiroAtualMes(0);
+      } else {
+        setDinheiroAtualMes(Number(guardado[0].value));
+      }
+    }
+  };
 
   useEffect(() => {
     listSaved();
+    carregarDadosDinheiroAtual();
   }, []);
 
   return (
@@ -393,7 +418,9 @@ function Card({
         open={openDinheiroAtualModal}
         setOpen={setOpenDinheiroAtualModal}
         mes={mes}
+        carregarDadosDinheiroAtual={carregarDadosDinheiroAtual}
         responseGetDinheiroAtual={responseGetDinheiroAtual}
+        listDinheiroAtual={listDinheiroAtual}
       />
       <FreeMonay
         openFreeMonay={openFreeMonay}
@@ -402,6 +429,7 @@ function Card({
         typeModal={typeModal}
         entrada={entrada}
         saida={saida}
+        dinheiroAtualMes={dinheiroAtualMes}
         mes={mes}
         responseGetGuardado={responseGetGuardado}
         responseGetDinheiroAtual={responseGetDinheiroAtual}

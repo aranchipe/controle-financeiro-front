@@ -25,6 +25,7 @@ function FreeMonay({
   typeModal,
   entrada,
   saida,
+  dinheiroAtualMes,
   mes,
   responseGetGuardado,
   entradasMes,
@@ -33,12 +34,13 @@ function FreeMonay({
   responseGetDinheiroAtual
 }) {
   const [loading, setLoading] = useState(false);
+
   const token = getItem("token");
   const [savedMesValue, setSavedMesValue] = useState();
   const [savedMesId, setSavedMesId] = useState();
   const [dinheiroAtualMesValue, setDinheiroAtualMesValue] = useState();
 
-  const handleClose = () => setOpenFreeMonay(false);
+  const handleClose = () => {setOpenFreeMonay(false);console.log(dinheiroAtualMes)}
 
   const {
     register,
