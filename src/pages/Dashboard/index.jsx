@@ -28,12 +28,12 @@ function Dashboard() {
   const handleOpenTotalSafe = () => setOpenTotalSafe(true);
 
 
-
+  console.log('ola')
   const mesAtual = new Date().getMonth();
 
   const token = getItem("token");
 
- 
+
 
   const userDetail = async () => {
     try {
@@ -45,7 +45,7 @@ function Dashboard() {
 
       setUserName(response.data.name);
       setUserEmail(response.data.email);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const listBillings = async () => {
@@ -93,7 +93,7 @@ function Dashboard() {
       if (response.data) {
         setResponseGetDinheiroAtual(response.data);
       }
-      
+
     } catch (error) {
     }
   };
@@ -109,26 +109,26 @@ function Dashboard() {
       sx={
         openDashboard === 0 || openDashboard === 1
           ? {
-              minHeight: "100vh",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "sticky",
-              px: { lg: "20vw", xs: "10vw" },
-              maxWidth: "100vw",
-            }
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "sticky",
+            px: { lg: "20vw", xs: "10vw" },
+            maxWidth: "100vw",
+          }
           : {
-              height: "100vh",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              px: { lg: "20vw", xs: "10vw" },
-              position: "sticky",
-              overflowY: "hidden",
-              maxWidth: "100vw",
-            }
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            px: { lg: "20vw", xs: "10vw" },
+            position: "sticky",
+            overflowY: "hidden",
+            maxWidth: "100vw",
+          }
       }
     >
       <Header userName={userName} userEmail={userEmail} />
@@ -208,13 +208,13 @@ function Dashboard() {
         setOpen={setOpen}
         action="register"
       />
-      <div 
+      <div
         className={
           openDashboard === 0
             ? " dashboard_3 dashboard_3_none"
             : openDashboard === 1
-            ? " dashboard-content dashboard-content-aberto"
-            : " dashboard-content dashboard-content-fechado"
+              ? " dashboard-content dashboard-content-aberto"
+              : " dashboard-content dashboard-content-fechado"
         }
       >
         <CloseIcon
