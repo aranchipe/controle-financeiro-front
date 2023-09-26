@@ -15,7 +15,7 @@ function Header({ userName, userEmail }) {
           background: "var(--cor-primaria)",
           height: "10vh",
           width: "100vw",
-          position: "fixed",
+          position: "absolute",
           top: "0",
           left: "0",
           display: "flex",

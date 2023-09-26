@@ -40,7 +40,7 @@ function FreeMonay({
   const [savedMesId, setSavedMesId] = useState();
   const [dinheiroAtualMesValue, setDinheiroAtualMesValue] = useState();
 
-  const handleClose = () => {setOpenFreeMonay(false);console.log(dinheiroAtualMes)}
+  const handleClose = () => { setOpenFreeMonay(false); }
 
   const {
     register,
@@ -62,7 +62,7 @@ function FreeMonay({
   };
 
   useWatchField("value");
-  
+
   const listSaved = () => {
     if (responseGetGuardado) {
       const saved = responseGetGuardado.filter((item) => {
@@ -155,6 +155,33 @@ function FreeMonay({
     saidasMes();
     listDinheiroAtual()
   }, [openFreeMonay]);
+
+  let mesString = "";
+  if (new Date().getMonth() === 0) {
+    mesString = "janeiro";
+  } else if (new Date().getMonth() === 1) {
+    mesString = "fevereiro";
+  } else if (new Date().getMonth() === 2) {
+    mesString = "março";
+  } else if (new Date().getMonth() === 3) {
+    mesString = "abril";
+  } else if (new Date().getMonth() === 4) {
+    mesString = "maio";
+  } else if (new Date().getMonth() === 5) {
+    mesString = "junho";
+  } else if (new Date().getMonth() === 6) {
+    mesString = "julho";
+  } else if (new Date().getMonth() === 7) {
+    mesString = "agosto";
+  } else if (new Date().getMonth() === 8) {
+    mesString = "setembro";
+  } else if (new Date().getMonth() === 9) {
+    mesString = "outubro";
+  } else if (new Date().getMonth() === 10) {
+    mesString = "novembro";
+  } else if (new Date().getMonth() === 11) {
+    mesString = "dezembro";
+  }
   return (
     <div>
       <Modal
@@ -206,20 +233,20 @@ function FreeMonay({
             sx={
               typeModal === "guardado"
                 ? {
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 3,
-                  }
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 3,
+                }
                 : {
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    height: "50%",
-                    gap: { xs: 3, lg: "none" },
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  height: "50%",
+                  gap: { xs: 3, lg: "none" },
 
-                    justifyContent: { xs: "center", lg: "none" },
-                  }
+                  justifyContent: { xs: "center", lg: "none" },
+                }
             }
             container
             component="form"
@@ -267,14 +294,12 @@ function FreeMonay({
                 value={
                   typeModal === "livre"
                     ? Number.isInteger(
-                        (dinheiroAtualMesValue - savedMes + entrada - saida) / 100
-                      )
-                      ? `R$ ${
-                          (dinheiroAtualMesValue - savedMes + entrada - saida) / 100
-                        }.00`
-                      : `R$ ${
-                          (dinheiroAtualMesValue - savedMes + entrada - saida) / 100
-                        }`
+                      (mes === mesString ? (Number(dinheiroAtualMesValue) + entrada - saida) / 100 : (dinheiroAtualMesValue - savedMes + entrada - saida) / 100)
+                    )
+                      ? `R$ ${(mes === mesString ? (Number(dinheiroAtualMesValue) + entrada - saida) / 100 : (dinheiroAtualMesValue - savedMes + entrada - saida) / 100)
+                      }.00`
+                      : `R$ ${(mes === mesString ? (Number(dinheiroAtualMesValue) + entrada - saida) / 100 : (dinheiroAtualMesValue - savedMes + entrada - saida) / 100)
+                      }`
                     : getValues().value
                 }
               />
@@ -286,18 +311,18 @@ function FreeMonay({
               sx={
                 typeModal === "guardado"
                   ? {
-                      display: "flex",
-                      justifyContent: "center",
-                      width: "100%",
-                      mt: 2,
-                    }
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                    mt: 2,
+                  }
                   : {
-                      display: "flex",
-                      justifyContent: "center",
-                      width: "100%",
-                      position: "absolute",
-                      bottom: 0,
-                    }
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                    position: "absolute",
+                    bottom: 0,
+                  }
               }
             >
               {typeModal === "guardado" ? (

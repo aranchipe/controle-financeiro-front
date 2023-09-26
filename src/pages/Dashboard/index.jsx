@@ -28,7 +28,7 @@ function Dashboard() {
   const handleOpenTotalSafe = () => setOpenTotalSafe(true);
 
 
-  console.log('ola')
+
   const mesAtual = new Date().getMonth();
 
   const token = getItem("token");
@@ -57,7 +57,6 @@ function Dashboard() {
       });
       setRegistros(response.data);
     } catch (error) {
-      console.log("erro");
     } finally {
     }
   };
@@ -76,7 +75,6 @@ function Dashboard() {
       }
       setTotalSaved(totalSaved);
     } catch (error) {
-      console.log(error.response, "3");
     }
   };
   const carregarDadosGuardado = () => {
