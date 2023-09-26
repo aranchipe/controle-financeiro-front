@@ -138,6 +138,7 @@ function DinheiroAtualModal({
     listDinheiroAtualState();
     listDinheiroAtual()
   }, [open]);
+  console.log('ola')
 
   return (
     <Box>
